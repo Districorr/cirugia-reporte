@@ -53,7 +53,88 @@
     <div class="form-group"><label>Paciente</label><input id="paciente" class="form-control" /></div>
     <div class="form-group"><label>Médico</label><input id="medico" class="form-control" /></div>
     <div class="form-group"><label>Fecha de Cirugía</label><input type="date" id="fechaCirugia" class="form-control" /></div>
-    <div class="form-group"><label>Tipo de Cirugía</label><input id="tipoCirugia" class="form-control" /></div>
+
+    <!-- CAMPO MEJORADO -->
+    <div class="form-group">
+      <label>Tipo de Cirugía</label>
+      <input id="tipoCirugia" class="form-control" list="tiposCirugia" placeholder="Escriba o seleccione..." />
+      <datalist id="tiposCirugia">
+        <!-- Opciones generadas desde el archivo de clasificación -->
+        <option>ARTROSCOPIA DE CADERA</option>
+        <option>SISTEMA ALL INSIDE</option>
+        <option>ARTROPLASTIA ANATOMICA DE HUMERO</option>
+        <option>ARTROPLASTIA CUPULA RADIAL</option>
+        <option>ARTROPLASTIA REVERSA</option>
+        <option>ARTRODESIS CERVICAL/ DORSAL/ LUMBAR HASTA 3 NIVELES</option>
+        <option>ARTROSCOPIA DE HOMBRO ACROMIOCLAVICULAR</option>
+        <option>ARTROSCOPIA DE HOMBRO - COMPLEJA - PEEK</option>
+        <option>ARTROSCOPIA DE MANO - CODO - TOBILLO</option>
+        <option>ARTROSCOPIA RODILLA COMPLEJA</option>
+        <option>ARTRO RODILLA SIMPLE</option>
+        <option>ARTROPLASTIA HUMERO PARCIAL</option>
+        <option>ASISTENCIA POR DRILL CON FRESAS,BURS O SHAVER, CRANEO</option>
+        <option>CAGE PEEK</option>
+        <option>CLAVO DHS</option>
+        <option>CLAVO EXPERT F-T</option>
+        <option>CLAVO GAMMA</option>
+        <option>CLAVO NANCY</option>
+        <option>CLAVO CON ATB</option>
+        <option>CLAVIJA</option>
+        <option>CLAVO F/T/H EN ACERO</option>
+        <option>CLAVO F/T/H TITANIO</option>
+        <option>CLAVO FEMUR/TIBIA CON ATB</option>
+        <option>COLOCACION MECHES</option>
+        <option>COLUMNA POR NIVELES</option>
+        <option>CRANEOPLASTIA MAS DE 4 HORAS</option>
+        <option>CRANEOPLASTIA POR HORA UNA VEZ SUSPERADAS 8 HORAS DE CX</option>
+        <option>CRANEOPLASTIA HASTA 4 HORAS</option>
+        <option>CRANEOPLATIA</option>
+        <option>CUPULA RADIAL</option>
+        <option>DESCARTABLE</option>
+        <option>ENDOPROTESIS</option>
+        <option>EQUIPO</option>
+        <option>ESCOLIOSIS POR NIVEL</option>
+        <option>EXTRACION CLAVOS</option>
+        <option>EXTRACION PLACAS</option>
+        <option>EXTRACCION MATERIAL</option>
+        <option>HOMBRO - ACROMICLAVICULAR</option>
+        <option>HOMBRO PEEK</option>
+        <option>INTERESPINOSO O CAGE POR IMPLANTE</option>
+        <option>JPX</option>
+        <option>LESIÓN DE LIGAMENTO CRUZADO ANTERIOR</option>
+        <option>LIGAMENTO CRUZADO COMPLEJO</option>
+        <option>LOGISTICA</option>
+        <option>MANO ARPON</option>
+        <option>MAXILOFACIAL COMPLEJA</option>
+        <option>MAXILOFACIAL POR HORA UNA VEZ SUPERADA 8 HORAS DE CX</option>
+        <option>MAXILOFACIAL SIMPLE</option>
+        <option>MICROFRAGMENTO</option>
+        <option>ORTOPEDIA</option>
+        <option>OSTESINSTESIS 3,5 TITANIO</option>
+        <option>OSTEOSINTESIS 4,5 ACERO</option>
+        <option>OSTEOSINTESIS 4,5 EN TITANIO</option>
+        <option>OSTESINSTESIS 3,5 ACERO</option>
+        <option>PLACA CERVICAL</option>
+        <option>PUNTA SHAVER</option>
+        <option>RODILLA</option>
+        <option>REV RTC REVISION</option>
+        <option>RTC NO CEMENTADA</option>
+        <option>REEMPAZO TOTAL DE CADERA BIPOLAR</option>
+        <option>RTC CEMENTADA - ESPACIADOR</option>
+        <option>RTC HIBRIDA - REVISION</option>
+        <option>REEMPLAZO TOTAL RODILLA ANATOMICA</option>
+        <option>RTR REVISION</option>
+        <option>RTR PRIMARIA C/ VASTAGO TIBIAL</option>
+        <option>SIN CONSUMO O SUSPENDIDA SE COBRARA EL 50% SEGUN COMPL</option>
+        <option>SUTURA</option>
+        <option>SUTURA COMPLEJA</option>
+        <option>THOMPSON</option>
+        <option>TORNILLOS CANULADOS/HERBERT</option>
+        <option>TUTOR</option>
+        <option>XLIF, ALIF, OLIF SISTEMAS MINIVASICO/LAMPAROSCOPIA DE COLMN</option>
+      </datalist>
+    </div>
+
     <div class="form-group"><label>Material Requerido</label><textarea id="material" class="form-control"></textarea></div>
     <div class="form-group"><label>Observaciones</label><textarea id="observaciones" class="form-control"></textarea></div>
     <div class="form-group"><label>Información Adicional</label><textarea id="infoAdicional" class="form-control"></textarea></div>
