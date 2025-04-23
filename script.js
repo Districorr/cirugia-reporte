@@ -1,3 +1,31 @@
+function actualizarSugerencias(idInput, idList) {
+  const input = document.getElementById(idInput);
+  const list = document.getElementById(idList);
+  const key = `sugerencias_${idInput}`;
+  const valores = JSON.parse(localStorage.getItem(key) || "[]");
+
+  // Agregar nuevo valor si no existe
+  input.addEventListener('change', () => {
+    const nuevo = input.value.trim();
+    if (nuevo && !valores.includes(nuevo)) {
+      valores.push(nuevo);
+      localStorage.setItem(key, JSON.stringify(valores));
+      actualizarLista();
+    }
+  });
+
+  function actualizarLista() {
+    list.innerHTML = '';
+    valores.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v;
+      list.appendChild(opt);
+    });
+  }
+
+  actualizarLista();
+}
+
 function obtenerDatos() {
   return {
     paciente: document.getElementById('paciente').value,
@@ -100,6 +128,11 @@ async function descargarPDF() {
     <hr style="margin-top:30px; border:none; border-top:1px dashed #ccc;" />
     <div style="text-align:right; font-size:10pt; color:#888;">Generado por sistema Districorr</div>
   `;
+window.onload = () => {
+  actualizarSugerencias('medico', 'medicosList');
+  actualizarSugerencias('instrumentador', 'instrumentadoresList');
+  actualizarSugerencias('lugarCirugia', 'lugaresList');
+};
 
   document.body.appendChild(tmp);
   const canvas = await html2canvas(tmp, { scale: 2 });
