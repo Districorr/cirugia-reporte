@@ -1,77 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generador de Reportes de Cirugía Districorr</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reporte de Cirugía</title>
   <link rel="icon" href="https://i.imgur.com/aA7RzTN.png" />
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Lato&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
-      authDomain: "cirugia-reporte.firebaseapp.com",
-      projectId: "cirugia-reporte",
-      storageBucket: "cirugia-reporte.firebasestorage.app",
-      messagingSenderId: "698831567840",
-      appId: "1:698831567840:web:fc6d6197f22beba4d88985",
-      measurementId: "G-HD7ZLL1GLZ"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-  </script>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <img src="https://i.imgur.com/aA7RzTN.png" class="logo-header" alt="Logo Districorr" />
-      <h4 class="text-primary font-weight-bold">Generador de Reportes de Cirugía Districorr</h4>
-    </header>
-
-    <div class="form-group">
-      <label>Formato de Texto</label>
-      <select id="formato" class="form-control">
-        <option value="formal">Formal</option>
-        <option value="moderno">Moderno</option>
-        <option value="casual">Casual</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Mensaje de Inicio</label>
-      <select id="mensajeInicio" class="form-control">
-        <option>Estimados, se adjunta información de cirugía para gestión de materiales y logística.</option>
-        <option>Equipo, adjunto detalles de la cirugía (información general y logística) Verifiquen stock.</option>
-        <option>Estimados,Por favor, ver detalle del procedimiento quirúrgico para coordinación interna.</option>
-      </select>
-    </div>
-
-    <div class="form-group"><label>Paciente</label><input id="paciente" class="form-control" /></div>
-    <div class="form-group"><label>Médico</label><input id="medico" class="form-control" /></div>
-    <div class="form-group"><label>Fecha de Cirugía</label><input type="date" id="fechaCirugia" class="form-control" /></div>
-    <div class="form-group"><label>Tipo de Cirugía</label><input id="tipoCirugia" class="form-control" /></div>
-    <div class="form-group"><label>Material Requerido</label><textarea id="material" class="form-control"></textarea></div>
-    <div class="form-group"><label>Observaciones</label><textarea id="observaciones" class="form-control"></textarea></div>
-    <div class="form-group"><label>Información Adicional</label><textarea id="infoAdicional" class="form-control"></textarea></div>
-
-    <div class="text-center">
-      <button onclick="generarTexto()">Generar Texto</button>
-      <button onclick="copiarTexto()">Copiar y Guardar</button>
-      <button onclick="descargarPDF()">Descargar PDF</button>
-      <a href="admin.html" class="btn-link">Ver Reportes</a>
-    </div>
-
-    <div id="resultado-container" style="display:none;">
-      <h5 class="mt-4">Resultado:</h5>
-      <pre id="texto-plano-output"></pre>
-    </div>
-
-    <small class="credit">By Responsable de Sistemas Franco Pared – Districorr ®</small>
-  </div>
-  <script src="script.js"></script>
+  <input id="tipoCirugia" list="dl-tipos" />
+  <datalist id="dl-tipos">
+    <option value="ARTROSCOPIA DE CADERA">
+<option value="SISTEMA ALL INSIDE">
+<option value="ARTROPLASTIA ANATOMICA DE HUMERO">
+<option value="ARTROPLASTIA CUPULA RADIAL">
+<option value="ARTROPLASTIA REVERSA">
+<option value="ARTRODESIS CERVICAL/ DORSAL/ LUMBAR HASTA 3 NIVELES">
+<option value="...">
+  </datalist>
 </body>
 </html>
