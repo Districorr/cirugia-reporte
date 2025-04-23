@@ -30,6 +30,8 @@ function obtenerDatos() {
   return {
     paciente: document.getElementById('paciente').value,
     medico: document.getElementById('medico').value,
+    instrumentador: document.getElementById('instrumentador').value,
+    lugarCirugia: document.getElementById('lugarCirugia').value,
     fechaCirugia: document.getElementById('fechaCirugia').value,
     tipoCirugia: document.getElementById('tipoCirugia').value,
     material: document.getElementById('material').value,
