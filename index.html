@@ -37,21 +37,38 @@
       <select id="formato" class="form-control">
         <option value="formal">Formal</option>
         <option value="moderno">Moderno</option>
-        <option value="casual">Casual</option>
+        <option value="casual">Detallado</option>
       </select>
     </div>
 
     <div class="form-group">
       <label>Mensaje de Inicio</label>
       <select id="mensajeInicio" class="form-control">
+        <option>Estimados, Adjunto detalles de la cirugia programada</option>
+        <option>Estimados, Informo las novedades de la cirugia ya programada</option>
         <option>Estimados, se adjunta información de cirugía para gestión de materiales y logística.</option>
         <option>Equipo, adjunto detalles de la cirugía (información general y logística) Verifiquen stock.</option>
         <option>Estimados,Por favor, ver detalle del procedimiento quirúrgico para coordinación interna.</option>
+         
       </select>
     </div>
 
     <div class="form-group"><label>Paciente</label><input id="paciente" class="form-control" /></div>
-    <div class="form-group"><label>Médico</label><input id="medico" class="form-control" /></div>
+<div class="form-group">
+  <label>Médico</label>
+  <input id="medico" class="form-control" list="medicosList" placeholder="Escriba o seleccione..." />
+  <datalist id="medicosList"></datalist>
+</div>
+<div class="form-group">
+  <label>Instrumentador</label>
+  <input id="instrumentador" class="form-control" list="instrumentadoresList" placeholder="Escriba o seleccione..." />
+  <datalist id="instrumentadoresList"></datalist>
+</div>
+<div class="form-group">
+  <label>Lugar de Cirugía</label>
+  <input id="lugarCirugia" class="form-control" list="lugaresList" placeholder="Escriba o seleccione..." />
+  <datalist id="lugaresList"></datalist>
+</div>
     <div class="form-group"><label>Fecha de Cirugía</label><input type="date" id="fechaCirugia" class="form-control" /></div>
 
     <!-- CAMPO MEJORADO -->
