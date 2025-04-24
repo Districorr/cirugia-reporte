@@ -4,7 +4,6 @@ function actualizarSugerencias(idInput, idList) {
   const key = `sugerencias_${idInput}`;
   const valores = JSON.parse(localStorage.getItem(key) || "[]");
 
-  // Agregar nuevo valor si no existe
   input.addEventListener('change', () => {
     const nuevo = input.value.trim();
     if (nuevo && !valores.includes(nuevo)) {
@@ -25,6 +24,7 @@ function actualizarSugerencias(idInput, idList) {
 
   actualizarLista();
 }
+
 function obtenerDatos() {
   return {
     paciente: document.getElementById('paciente').value,
@@ -40,18 +40,20 @@ function obtenerDatos() {
     formato: document.getElementById('formato').value
   };
 }
-}
 
 function generarTexto() {
   const d = obtenerDatos();
-  const fechaInput = document.getElementById('fechaCirugia').value;
-  const partesFecha = fechaInput.split("-");
-  const fecha = new Date(Number(partesFecha[0]), Number(partesFecha[1]) - 1, Number(partesFecha[2]));
+
+  // Ajuste de fecha para evitar desfase por zona horaria
+  const fecha = new Date(d.fechaCirugia + 'T00:00:00');
+  const df = fecha.toLocaleDateString('es-AR', { timeZone: 'UTC' });
+
   const line = (label, value) => `${label}: ${value || 'No especificado'}`;
   let texto = '';
+
   if (d.formato === 'formal') {
     texto = [
-      'REPORTE DE CIRUGÍA PROGRAMADA','', d.mensajeInicio,'',
+      'REPORTE DE CIRUGÍA PROGRAMADA', '', d.mensajeInicio, '',
       line('Paciente', d.paciente),
       line('Tipo de Cirugía', d.tipoCirugia),
       line('Médico Responsable', d.medico),
@@ -63,7 +65,7 @@ function generarTexto() {
     ].join('\n');
   } else if (d.formato === 'moderno') {
     texto = [
-      'Cirugía Programada','', d.mensajeInicio,'',
+      'Cirugía Programada', '', d.mensajeInicio, '',
       line('Paciente', d.paciente),
       line('Tipo', d.tipoCirugia),
       line('Médico', d.medico),
@@ -74,17 +76,18 @@ function generarTexto() {
     ].join('\n');
   } else {
     texto = [
-      'INFORME DETALLADO DE CIRUGÍA','', d.mensajeInicio,'',
+      'INFORME DETALLADO DE CIRUGÍA', '', d.mensajeInicio, '',
       'DATOS:', line('Paciente', d.paciente),
       line('Tipo de Cirugía', d.tipoCirugia),
       line('Médico Responsable', d.medico),
-      line('Fecha', df),'', 'DETALLES:',
+      line('Fecha', df), '', 'DETALLES:',
       line('Material', d.material),
-      line('Observaciones', d.observaciones),'',
+      line('Observaciones', d.observaciones), '',
       'INFO ADICIONAL:', d.infoAdicional,
       '', 'Atte., Coordinación Districorr'
     ].join('\n');
   }
+
   document.getElementById('resultado-container').style.display = 'block';
   document.getElementById('texto-plano-output').textContent = texto;
 }
@@ -132,11 +135,6 @@ async function descargarPDF() {
     <hr style="margin-top:30px; border:none; border-top:1px dashed #ccc;" />
     <div style="text-align:right; font-size:10pt; color:#888;">Generado por sistema Districorr</div>
   `;
-window.onload = () => {
-actualizarSugerencias('medico', 'medicosList');
-  actualizarSugerencias('instrumentador', 'instrumentadoresList');
-  actualizarSugerencias('lugarCirugia', 'lugaresList');
-};
 
   document.body.appendChild(tmp);
   const canvas = await html2canvas(tmp, { scale: 2 });
@@ -147,3 +145,9 @@ actualizarSugerencias('medico', 'medicosList');
   pdf.save('Reporte_Cirugia.pdf');
   document.body.removeChild(tmp);
 }
+
+window.onload = () => {
+  actualizarSugerencias('medico', 'medicosList');
+  actualizarSugerencias('instrumentador', 'instrumentadoresList');
+  actualizarSugerencias('lugarCirugia', 'lugaresList');
+};
