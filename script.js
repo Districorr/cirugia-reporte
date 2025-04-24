@@ -210,11 +210,7 @@ window.onload = () => {
   actualizarSugerencias('medico', 'medicosList');
   actualizarSugerencias('instrumentador', 'instrumentadoresList');
   actualizarSugerencias('lugarCirugia', 'lugaresList');
-  const ultimo = localStorage.getItem('ultimoReporte');
-  if (ultimo) {
-    const cont = document.getElementById('resultado-container');
-    cont.innerHTML = ultimo;
-    cont.style.display = 'block';
+ 
   }
 };
 
