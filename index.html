@@ -7,6 +7,7 @@
   <link rel="icon" href="https://i.imgur.com/aA7RzTN.png" />
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Lato&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -24,40 +25,6 @@
     const db = firebase.firestore();
   </script>
 </head>
-<script>
-fetch('tipos_cirugia.json')
-  .then(response => response.json())
-  .then(data => {
-    const datalist = document.getElementById('tiposCirugia');
-    const input = document.getElementById('tipoCirugia');
-    const key = 'ranking_tiposCirugia';
-
-    function actualizarDatalist() {
-      const ranking = JSON.parse(localStorage.getItem(key) || '{}');
-      const ordenados = [...data].sort((a, b) => (ranking[b] || 0) - (ranking[a] || 0));
-      datalist.innerHTML = '';
-      ordenados.forEach(tipo => {
-        const option = document.createElement('option');
-        option.value = tipo;
-        datalist.appendChild(option);
-      });
-    }
-
-    input.addEventListener('change', () => {
-      const valor = input.value.trim();
-      if (!valor) return;
-      const ranking = JSON.parse(localStorage.getItem(key) || '{}');
-      ranking[valor] = (ranking[valor] || 0) + 1;
-      localStorage.setItem(key, JSON.stringify(ranking));
-      actualizarDatalist();
-    });
-
-    actualizarDatalist();
-  })
-  .catch(err => console.error('Error cargando tipos de cirugía:', err));
-</script>
-<script src="script.js"></script>
-
 <body>
   <div class="container">
     <header>
@@ -82,15 +49,109 @@ fetch('tipos_cirugia.json')
         <option>Estimados, se adjunta información de cirugía para gestión de materiales y logística.</option>
         <option>Equipo, adjunto detalles de la cirugía (información general y logística) Verifiquen stock.</option>
         <option>Estimados,Por favor, ver detalle del procedimiento quirúrgico para coordinación interna.</option>
+         
       </select>
     </div>
 
     <div class="form-group"><label>Paciente</label><input id="paciente" class="form-control" /></div>
-    <div class="form-group"><label>Médico</label><input id="medico" class="form-control" list="medicosList" /><datalist id="medicosList"></datalist></div>
-    <div class="form-group"><label>Instrumentador</label><input id="instrumentador" class="form-control" list="instrumentadoresList" /><datalist id="instrumentadoresList"></datalist></div>
-    <div class="form-group"><label>Lugar de Cirugía</label><input id="lugarCirugia" class="form-control" list="lugaresList" /><datalist id="lugaresList"></datalist></div>
+<div class="form-group">
+  <label>Médico</label>
+  <input id="medico" class="form-control" list="medicosList" placeholder="Escriba o seleccione..." />
+  <datalist id="medicosList"></datalist>
+</div>
+<div class="form-group">
+  <label>Instrumentador</label>
+  <input id="instrumentador" class="form-control" list="instrumentadoresList" placeholder="Escriba o seleccione..." />
+  <datalist id="instrumentadoresList"></datalist>
+</div>
+<div class="form-group">
+  <label>Lugar de Cirugía</label>
+  <input id="lugarCirugia" class="form-control" list="lugaresList" placeholder="Escriba o seleccione..." />
+  <datalist id="lugaresList"></datalist>
+</div>
     <div class="form-group"><label>Fecha de Cirugía</label><input type="date" id="fechaCirugia" class="form-control" /></div>
-    <div class="form-group"><label>Tipo de Cirugía</label><input id="tipoCirugia" class="form-control" list="tiposCirugia" /><datalist id="tiposCirugia"></datalist></div>
+
+    <!-- CAMPO MEJORADO -->
+    <div class="form-group">
+      <label>Tipo de Cirugía</label>
+      <input id="tipoCirugia" class="form-control" list="tiposCirugia" placeholder="Escriba o seleccione..." />
+      <datalist id="tiposCirugia">
+        <!-- Opciones generadas desde el archivo de clasificación -->
+        <option>ARTROSCOPIA DE CADERA</option>
+        <option>SISTEMA ALL INSIDE</option>
+        <option>ARTROPLASTIA ANATOMICA DE HUMERO</option>
+        <option>ARTROPLASTIA CUPULA RADIAL</option>
+        <option>ARTROPLASTIA REVERSA</option>
+        <option>ARTRODESIS CERVICAL/ DORSAL/ LUMBAR HASTA 3 NIVELES</option>
+        <option>ARTROSCOPIA DE HOMBRO ACROMIOCLAVICULAR</option>
+        <option>ARTROSCOPIA DE HOMBRO - COMPLEJA - PEEK</option>
+        <option>ARTROSCOPIA DE MANO - CODO - TOBILLO</option>
+        <option>ARTROSCOPIA RODILLA COMPLEJA</option>
+        <option>ARTRO RODILLA SIMPLE</option>
+        <option>ARTROPLASTIA HUMERO PARCIAL</option>
+        <option>ASISTENCIA POR DRILL CON FRESAS,BURS O SHAVER, CRANEO</option>
+        <option>CAGE PEEK</option>
+        <option>CLAVO DHS</option>
+        <option>CLAVO EXPERT F-T</option>
+        <option>CLAVO GAMMA</option>
+        <option>CLAVO NANCY</option>
+        <option>CLAVO CON ATB</option>
+        <option>CLAVIJA</option>
+        <option>CLAVO F/T/H EN ACERO</option>
+        <option>CLAVO F/T/H TITANIO</option>
+        <option>CLAVO FEMUR/TIBIA CON ATB</option>
+        <option>COLOCACION MECHES</option>
+        <option>COLUMNA POR NIVELES</option>
+        <option>CRANEOPLASTIA MAS DE 4 HORAS</option>
+        <option>CRANEOPLASTIA POR HORA UNA VEZ SUSPERADAS 8 HORAS DE CX</option>
+        <option>CRANEOPLASTIA HASTA 4 HORAS</option>
+        <option>CRANEOPLATIA</option>
+        <option>CUPULA RADIAL</option>
+        <option>DESCARTABLE</option>
+        <option>ENDOPROTESIS</option>
+        <option>EQUIPO</option>
+        <option>ESCOLIOSIS POR NIVEL</option>
+        <option>EXTRACION CLAVOS</option>
+        <option>EXTRACION PLACAS</option>
+        <option>EXTRACCION MATERIAL</option>
+        <option>HOMBRO - ACROMICLAVICULAR</option>
+        <option>HOMBRO PEEK</option>
+        <option>INTERESPINOSO O CAGE POR IMPLANTE</option>
+        <option>JPX</option>
+        <option>LESIÓN DE LIGAMENTO CRUZADO ANTERIOR</option>
+        <option>LIGAMENTO CRUZADO COMPLEJO</option>
+        <option>LOGISTICA</option>
+        <option>MANO ARPON</option>
+        <option>MAXILOFACIAL COMPLEJA</option>
+        <option>MAXILOFACIAL POR HORA UNA VEZ SUPERADA 8 HORAS DE CX</option>
+        <option>MAXILOFACIAL SIMPLE</option>
+        <option>MICROFRAGMENTO</option>
+        <option>ORTOPEDIA</option>
+        <option>OSTESINSTESIS 3,5 TITANIO</option>
+        <option>OSTEOSINTESIS 4,5 ACERO</option>
+        <option>OSTEOSINTESIS 4,5 EN TITANIO</option>
+        <option>OSTESINSTESIS 3,5 ACERO</option>
+        <option>PLACA CERVICAL</option>
+        <option>PUNTA SHAVER</option>
+        <option>RODILLA</option>
+        <option>REV RTC REVISION</option>
+        <option>RTC NO CEMENTADA</option>
+        <option>REEMPAZO TOTAL DE CADERA BIPOLAR</option>
+        <option>RTC CEMENTADA - ESPACIADOR</option>
+        <option>RTC HIBRIDA - REVISION</option>
+        <option>REEMPLAZO TOTAL RODILLA ANATOMICA</option>
+        <option>RTR REVISION</option>
+        <option>RTR PRIMARIA C/ VASTAGO TIBIAL</option>
+        <option>SIN CONSUMO O SUSPENDIDA SE COBRARA EL 50% SEGUN COMPL</option>
+        <option>SUTURA</option>
+        <option>SUTURA COMPLEJA</option>
+        <option>THOMPSON</option>
+        <option>TORNILLOS CANULADOS/HERBERT</option>
+        <option>TUTOR</option>
+        <option>XLIF, ALIF, OLIF SISTEMAS MINIVASICO/LAMPAROSCOPIA DE COLMN</option>
+      </datalist>
+    </div>
+
     <div class="form-group"><label>Material Requerido</label><textarea id="material" class="form-control"></textarea></div>
     <div class="form-group"><label>Observaciones</label><textarea id="observaciones" class="form-control"></textarea></div>
     <div class="form-group"><label>Información Adicional</label><textarea id="infoAdicional" class="form-control"></textarea></div>
@@ -98,19 +159,27 @@ fetch('tipos_cirugia.json')
     <div class="text-center">
       <button onclick="generarTexto()">Generar Texto</button>
       <button onclick="copiarTexto()">Copiar y Guardar</button>
-      <button onclick="compartirWhatsApp()">Compartir WhatsApp</button>
-      <button onclick="compartirComoImagen()">Compartir Imagen</button>
-      <button onclick="enviarPorEmail()">Enviar Email</button>
-      <button onclick="imprimirReporte()">Imprimir</button>
-      <button onclick="toggleDarkMode()">🌙 Modo Oscuro</button>
+      <button onclick="descargarPDF()">Descargar PDF</button>
       <a href="admin.html" class="btn-link">Ver Reportes</a>
     </div>
 
-    <div id="resultado-container" style="display:none;"></div>
+   <div id="resultado-container" style="display:none;">
+  <div style="
+    background-color: #f9f9f9;
+    border-left: 5px solid #007bff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  ">
+    <h4 style="margin-top: 0; color: #003f63;">📝 Resultado del Reporte</h4>
+    <pre id="texto-plano-output" style="white-space: pre-wrap; font-family: 'Courier New', monospace;"></pre>
+  </div>
+</div>
+
 
     <small class="credit">By Responsable de Sistemas Franco Pared – Districorr ®</small>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
