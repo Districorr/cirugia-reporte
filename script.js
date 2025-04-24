@@ -44,7 +44,9 @@ function obtenerDatos() {
 
 function generarTexto() {
   const d = obtenerDatos();
-  const df = new Date(d.fechaCirugia).toLocaleDateString('es-AR');
+  const fechaInput = document.getElementById('fechaCirugia').value;
+  const partesFecha = fechaInput.split("-");
+  const fecha = new Date(Number(partesFecha[0]), Number(partesFecha[1]) - 1, Number(partesFecha[2]));
   const line = (label, value) => `${label}: ${value || 'No especificado'}`;
   let texto = '';
   if (d.formato === 'formal') {
