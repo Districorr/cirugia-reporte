@@ -1,4 +1,3 @@
-
 function generarTexto() {
   const paciente = document.getElementById('paciente').value;
   const medico = document.getElementById('medico').value;
@@ -6,7 +5,7 @@ function generarTexto() {
   const tipo = document.getElementById('tipoCirugia').value;
   const material = document.getElementById('material').value;
   const formato = document.getElementById('formato').value;
-  const lugar = document.getElementById('lugar').value;
+  const lugar = document.getElementById('lugarCirugia').value; // corregido
   const instrumentador = document.getElementById('instrumentador').value;
   const saludo = document.getElementById('mensajeInicio').value;
 
@@ -42,3 +41,20 @@ function enviarPorEmail() {
 function imprimirReporte() {
   window.print();
 }
+
+// Si tenés una función para compartir como imagen:
+function compartirComoImagen() {
+  const contenedor = document.getElementById('resultado-container');
+  html2canvas(contenedor).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'reporte-cirugia.png';
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+}
+
+// Si activás modo oscuro manualmente:
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+}
+
