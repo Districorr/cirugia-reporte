@@ -43,107 +43,91 @@ function obtenerDatos() {
 
 function generarTexto() {
   const d = obtenerDatos();
-
-  // Ajuste de fecha para evitar desfase por zona horaria
   const fecha = new Date(d.fechaCirugia + 'T00:00:00');
   const df = fecha.toLocaleDateString('es-AR', { timeZone: 'UTC' });
+  const line = (label, value) => `<strong>${label}</strong>: ${value || 'No especificado'}`;
 
-  const line = (label, value) => `${label}: ${value || 'No especificado'}`;
   let texto = '';
-
   if (d.formato === 'formal') {
-    texto = [
-      'REPORTE DE CIRUGÍA PROGRAMADA', '', d.mensajeInicio, '',
-      line('Paciente', d.paciente),
-      line('Tipo de Cirugía', d.tipoCirugia),
-      line('Médico Responsable', d.medico),
-      line('Fecha de Cirugía', df),
-      line('Material Requerido', d.material),
-      line('Observaciones', d.observaciones),
-      line('Información Adicional', d.infoAdicional),
-      '', 'Gracias por su atención.', 'Coordinación Districorr'
-    ].join('\n');
+    texto = `
+      <h3>🗓️ REPORTE DE CIRUGÍA PROGRAMADA</h3>
+      <p>${d.mensajeInicio}</p>
+      <ul>
+        <li>${line('Paciente', d.paciente)}</li>
+        <li>${line('Tipo de Cirugía', d.tipoCirugia)}</li>
+        <li>${line('Médico Responsable', d.medico)}</li>
+        <li>${line('Fecha de Cirugía', df)}</li>
+        <li>${line('Material Requerido', d.material)}</li>
+        <li>${line('Observaciones', d.observaciones)}</li>
+        <li>${line('Información Adicional', d.infoAdicional)}</li>
+      </ul>
+      <p>Gracias por su atención.<br><strong>Coordinación Districorr</strong></p>`;
   } else if (d.formato === 'moderno') {
-    texto = [
-      'Cirugía Programada', '', d.mensajeInicio, '',
-      line('Paciente', d.paciente),
-      line('Tipo', d.tipoCirugia),
-      line('Médico', d.medico),
-      line('Fecha', df),
-      line('Material', d.material),
-      line('Notas', d.observaciones),
-      '', 'Gracias, quedo a disposición. Saludos.'
-    ].join('\n');
+    texto = `
+      <h3>📅 Cirugía Programada</h3>
+      <p>${d.mensajeInicio}</p>
+      <ul>
+        <li>${line('Paciente', d.paciente)}</li>
+        <li>${line('Tipo', d.tipoCirugia)}</li>
+        <li>${line('Médico', d.medico)}</li>
+        <li>${line('Fecha', df)}</li>
+        <li>${line('Material', d.material)}</li>
+        <li>${line('Notas', d.observaciones)}</li>
+      </ul>
+      <p>Gracias, quedo a disposición. Saludos.</p>`;
   } else {
-    texto = [
-      'INFORME DETALLADO DE CIRUGÍA', '', d.mensajeInicio, '',
-      'DATOS:', line('Paciente', d.paciente),
-      line('Tipo de Cirugía', d.tipoCirugia),
-      line('Médico Responsable', d.medico),
-      line('Fecha', df), '', 'DETALLES:',
-      line('Material', d.material),
-      line('Observaciones', d.observaciones), '',
-      'INFO ADICIONAL:', d.infoAdicional,
-      '', 'Atte., Coordinación Districorr'
-    ].join('\n');
+    texto = `
+      <h3>📝 INFORME DETALLADO DE CIRUGÍA</h3>
+      <p>${d.mensajeInicio}</p>
+      <h4>📌 DATOS</h4>
+      <ul>
+        <li>${line('Paciente', d.paciente)}</li>
+        <li>${line('Tipo de Cirugía', d.tipoCirugia)}</li>
+        <li>${line('Médico Responsable', d.medico)}</li>
+        <li>${line('Fecha', df)}</li>
+      </ul>
+      <h4>🧾 DETALLES</h4>
+      <ul>
+        <li>${line('Material', d.material)}</li>
+        <li>${line('Observaciones', d.observaciones)}</li>
+      </ul>
+      <h4>🧩 INFO ADICIONAL</h4>
+      <p>${d.infoAdicional}</p>
+      <p>Atte., Coordinación Districorr</p>`;
   }
 
-  document.getElementById('resultado-container').style.display = 'block';
-  document.getElementById('texto-plano-output').textContent = texto;
+  const resultado = document.getElementById('resultado-container');
+  resultado.style.display = 'block';
+  resultado.innerHTML = `
+    <div class="reporte-box">
+      ${texto}
+      <div class="text-center">
+        <button onclick="copiarTexto()">Copiar y Guardar</button>
+        <button onclick="descargarPDF()">Descargar PDF</button>
+        <button onclick="compartirWhatsApp()">Compartir por WhatsApp</button>
+      </div>
+    </div>`;
 }
 
 function copiarTexto() {
-  const texto = document.getElementById('texto-plano-output').textContent;
-  navigator.clipboard.writeText(texto).then(() => {
+  const text = document.querySelector('.reporte-box').innerText;
+  navigator.clipboard.writeText(text).then(() => {
     alert('Texto copiado.');
     guardarEnFirebase(obtenerDatos());
   });
 }
 
-function guardarEnFirebase(data) {
-  db.collection("reportes").add({
-    ...data,
-    timestamp: new Date().toISOString()
-  }).then(() => console.log("Guardado en Firebase"))
-    .catch(e => console.error("Error al guardar", e));
+function compartirWhatsApp() {
+  const texto = document.querySelector('.reporte-box').innerText;
+  const mensaje = encodeURIComponent(texto);
+  const url = `https://wa.me/?text=${mensaje}`;
+  window.open(url, '_blank');
 }
 
-async function descargarPDF() {
-  const texto = document.getElementById('texto-plano-output').textContent;
-  if (!texto.trim()) return alert('Primero generá el texto.');
-
-  const tmp = document.createElement('div');
-  tmp.style = `
-    width: 794px;
-    height: 1123px;
-    padding: 60px;
-    font-family: 'Lato', sans-serif;
-    font-size: 12pt;
-    line-height: 1.6;
-    background-color: #ffffff;
-    color: #111;
-    box-sizing: border-box;
-  `;
-
-  tmp.innerHTML = `
-    <div style="text-align:center; margin-bottom: 30px;">
-      <img src="https://i.imgur.com/aA7RzTN.png" alt="Logo Districorr" style="max-height:80px; margin-bottom: 10px;" />
-      <h2 style="color:#003f63; margin:0;">Reporte de Cirugía</h2>
-      <hr style="margin-top:20px; border:none; border-top:1px solid #003f63;" />
-    </div>
-    <pre style="white-space: pre-wrap;">${texto}</pre>
-    <hr style="margin-top:30px; border:none; border-top:1px dashed #ccc;" />
-    <div style="text-align:right; font-size:10pt; color:#888;">Generado por sistema Districorr</div>
-  `;
-
-  document.body.appendChild(tmp);
-  const canvas = await html2canvas(tmp, { scale: 2 });
-  const img = canvas.toDataURL('image/png');
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF('p', 'pt', 'a4');
-  pdf.addImage(img, 'PNG', 0, 0, 595, 842);
-  pdf.save('Reporte_Cirugia.pdf');
-  document.body.removeChild(tmp);
+function guardarEnFirebase(data) {
+  db.collection("reportes").add({ ...data, timestamp: new Date().toISOString() })
+    .then(() => console.log("Guardado en Firebase"))
+    .catch(e => console.error("Error al guardar", e));
 }
 
 window.onload = () => {
@@ -151,3 +135,4 @@ window.onload = () => {
   actualizarSugerencias('instrumentador', 'instrumentadoresList');
   actualizarSugerencias('lugarCirugia', 'lugaresList');
 };
+
