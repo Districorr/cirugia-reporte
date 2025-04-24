@@ -132,7 +132,7 @@ async function descargarPDF() {
     <div style="text-align:right; font-size:10pt; color:#888;">Generado por sistema Districorr</div>
   `;
 window.onload = () => {
-  actualizarSugerencias('medico', 'medicosList');
+actualizarSugerencias('medico', 'medicosList');
   actualizarSugerencias('instrumentador', 'instrumentadoresList');
   actualizarSugerencias('lugarCirugia', 'lugaresList');
 };
