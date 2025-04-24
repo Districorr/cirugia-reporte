@@ -139,16 +139,16 @@ function compartirWhatsApp() {
   const mensaje = encodeURIComponent(texto);
   window.open(`https://wa.me/?text=${mensaje}`, '_blank');
 }
-
-function compartirComoImagen() {
-  const node = document.getElementById('resultado-container');
-  html2canvas(node).then(canvas => {
+function generarImagen() {
+  const contenedor = document.getElementById('resultado-container');
+  html2canvas(contenedor).then(canvas => {
     const link = document.createElement('a');
     link.download = 'Reporte_Cirugia.png';
     link.href = canvas.toDataURL();
     link.click();
   });
 }
+
 
 function enviarPorEmail() {
   const contenido = document.getElementById('resultado-container').innerText;
