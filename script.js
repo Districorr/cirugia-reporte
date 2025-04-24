@@ -57,6 +57,7 @@ function generarTexto() {
         <li>${line('Tipo de Cirugía', d.tipoCirugia)}</li>
         <li>${line('Médico Responsable', d.medico)}</li>
         <li>${line('Fecha de Cirugía', df)}</li>
+        <li>${line('Lugar de Cirugía', d.lugarCirugia)}</li>
         <li>${line('Material Requerido', d.material)}</li>
         <li>${line('Observaciones', d.observaciones)}</li>
         <li>${line('Información Adicional', d.infoAdicional)}</li>
@@ -71,6 +72,7 @@ function generarTexto() {
         <li>${line('Tipo', d.tipoCirugia)}</li>
         <li>${line('Médico', d.medico)}</li>
         <li>${line('Fecha', df)}</li>
+        <li>${line('Lugar de Cirugía', d.lugarCirugia)}</li>
         <li>${line('Material', d.material)}</li>
         <li>${line('Notas', d.observaciones)}</li>
       </ul>
@@ -83,7 +85,9 @@ function generarTexto() {
       <ul>
         <li>${line('Paciente', d.paciente)}</li>
         <li>${line('Tipo de Cirugía', d.tipoCirugia)}</li>
+        <li>${line('Lugar de Cirugía', d.lugarCirugia)}</li>
         <li>${line('Médico Responsable', d.medico)}</li>
+         '', // ← espacio visual
         <li>${line('Fecha', df)}</li>
       </ul>
       <h4>🧾 DETALLES</h4>
