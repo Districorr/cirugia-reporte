@@ -1,4 +1,3 @@
-
 body {
   font-family: 'Lato', sans-serif;
   background-color: #f9f9f9;
@@ -6,15 +5,12 @@ body {
   margin: 0;
   color: #333;
 }
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #121212;
-    color: #f1f1f1;
-  }
-  .container {
-    background-color: #1e1e1e;
-  }
+
+label, h2, h4, .form-control, select, textarea, input {
+  color: #333;
+  font-weight: 500;
 }
+
 .container {
   background: #ffffff;
   max-width: 650px;
@@ -23,16 +19,21 @@ body {
   border-radius: 12px;
   box-shadow: 0 0 12px rgba(0,0,0,0.1);
 }
+
 .form-group {
   margin-bottom: 15px;
 }
+
 .form-control {
   width: 100%;
   padding: 10px;
   font-size: 1rem;
   border-radius: 6px;
   border: 1px solid #ccc;
+  color: #222;
+  background-color: #fff;
 }
+
 button, .btn-link {
   padding: 10px 15px;
   border-radius: 6px;
@@ -44,16 +45,19 @@ button, .btn-link {
 }
 button:hover, .btn-link:hover {
   background-color: #0056b3;
-label, h2, select, input, textarea {
-  color: #333 !important; /* color más oscuro y legible */
-  font-weight: 500;        /* mejor contraste */
 }
 
-h2 {
-  font-size: 1.3rem;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #222 !important;
-}
-
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #f1f1f1;
+  }
+  .container {
+    background-color: #1e1e1e;
+  }
+  .form-control {
+    background-color: #2a2a2a;
+    color: #f1f1f1;
+    border: 1px solid #555;
+  }
 }
