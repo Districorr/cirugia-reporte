@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Generador de Reportes de Cirugía Districorr</title>
-  <link rel="icon" href="https://i.imgur.com/aA7RzTN.png" />
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Lato&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -44,12 +43,64 @@
   </style>
 </head>
 <body>
-  <div class="spinner" id="spinner"></div>
-  <div class="container">
-    <!-- FORMULARIO COMPLETO (el mismo que ya tenés) -->
+<div class="spinner" id="spinner"></div>
+<div class="container">
+  <header>
+    <img src="https://i.imgur.com/aA7RzTN.png" class="logo-header" alt="Logo Districorr" />
+    <h4 class="text-primary font-weight-bold">Generador de Reportes de Cirugía Districorr</h4>
+  </header>
+
+  <div class="form-group">
+    <label>Paciente</label>
+    <input id="paciente" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label>Médico</label>
+    <input id="medico" class="form-control" list="medicosList" />
+    <datalist id="medicosList"></datalist>
+  </div>
+  <div class="form-group">
+    <label>Fecha de Cirugía</label>
+    <input type="date" id="fechaCirugia" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label>Tipo de Cirugía</label>
+    <input id="tipoCirugia" class="form-control" list="tiposCirugia" />
+    <datalist id="tiposCirugia"></datalist>
+  </div>
+  <div class="form-group">
+    <label>Material Requerido</label>
+    <textarea id="material" class="form-control"></textarea>
+  </div>
+  <div class="form-group">
+    <label>Formato de Texto</label>
+    <select id="formato" class="form-control">
+      <option value="formal">Formal</option>
+      <option value="moderno">Moderno</option>
+      <option value="casual">Detallado</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Mensaje de Inicio</label>
+    <select id="mensajeInicio" class="form-control">
+      <option>Estimados, Adjunto detalles de la cirugía programada</option>
+      <option>Equipo, Verifiquen stock para el procedimiento</option>
+    </select>
+  </div>
+
+  <div class="text-center">
+    <button onclick="generarTexto()">Generar Texto</button>
+    <button onclick="copiarTexto()">Copiar y Guardar</button>
+    <button onclick="compartirWhatsApp()">Enviar WhatsApp</button>
+    <button onclick="enviarPorEmail()">Enviar Email</button>
+    <button onclick="imprimirReporte()">Imprimir / PDF</button>
     <a href="admin.html" class="btn-link">📁 Ver Reportes</a>
     <a href="estadisticas.html" class="btn-link">📊 Ver Estadísticas</a>
   </div>
-  <script src="script.js"></script>
+
+  <div id="resultado-container" style="display:none;"></div>
+  <small class="credit">By Responsable de Sistemas Franco Pared – Districorr ®</small>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
