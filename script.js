@@ -40,6 +40,7 @@ function obtenerDatos() {
     formato: document.getElementById('formato').value
   };
 }
+}
 
 function generarTexto() {
   const d = obtenerDatos();
