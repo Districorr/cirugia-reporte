@@ -1,5 +1,6 @@
-// NUEVO SCRIPT COMPLETO con mejoras: sin botones duplicados, compartir por WhatsApp, imagen, email, imprimir, dark mode, animaciones, historial local, colores por formato, loading indicator
+// script.js - Versión corregida
 
+// Función para actualizar sugerencias en los campos de entrada
 function actualizarSugerencias(idInput, idList) {
   const input = document.getElementById(idInput);
   const list = document.getElementById(idList);
@@ -27,6 +28,7 @@ function actualizarSugerencias(idInput, idList) {
   actualizarLista();
 }
 
+// Función para obtener todos los datos del formulario
 function obtenerDatos() {
   return {
     paciente: document.getElementById('paciente').value,
@@ -43,6 +45,7 @@ function obtenerDatos() {
   };
 }
 
+// Función principal para generar el texto del reporte
 function generarTexto() {
   const d = obtenerDatos();
   const fecha = new Date(d.fechaCirugia + 'T00:00:00');
@@ -51,6 +54,7 @@ function generarTexto() {
 
   let claseFormato = '';
   let texto = '';
+  
   if (d.formato === 'formal') {
     claseFormato = 'formato-formal';
     texto = `
@@ -116,16 +120,13 @@ function generarTexto() {
   const resultado = document.getElementById('resultado-container');
   resultado.style.display = 'block';
   resultado.className = `reporte-box ${claseFormato}`;
-  resultado.innerHTML = `
-  <div class="reporte-box">
-    <img src="60ff9dfe-dcc4-4cf8-9d61-1eeb59b16d2e.png" alt="Logo Districorr" style="max-width: 100px; margin-bottom: 10px;" />
-    ${texto}
-  </div>
-`;
+  resultado.innerHTML = texto;
 
+  document.getElementById('texto-plano-output').textContent = resultado.innerText;
   localStorage.setItem('ultimoReporte', texto);
 }
 
+// Función para copiar el texto al portapapeles
 function copiarTexto() {
   const text = document.getElementById('resultado-container').innerText;
   navigator.clipboard.writeText(text).then(() => {
@@ -134,11 +135,14 @@ function copiarTexto() {
   });
 }
 
+// Función para compartir por WhatsApp
 function compartirWhatsApp() {
   const texto = document.getElementById('resultado-container').innerText;
   const mensaje = encodeURIComponent(texto);
   window.open(`https://wa.me/?text=${mensaje}`, '_blank');
 }
+
+// Función para generar imagen del reporte
 function generarImagen() {
   const contenedor = document.getElementById('resultado-container');
   html2canvas(contenedor).then(canvas => {
@@ -149,13 +153,23 @@ function generarImagen() {
   });
 }
 
-
+// Función para enviar por email
 function enviarPorEmail() {
   const contenido = document.getElementById('resultado-container').innerText;
   const mailto = `mailto:?subject=Reporte de Cirugía&body=${encodeURIComponent(contenido)}`;
   window.location.href = mailto;
 }
 
+// Función para descargar como PDF
+function descargarPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const contenido = document.getElementById('resultado-container').innerText;
+  doc.text(contenido, 10, 10);
+  doc.save('reporte_cirugia.pdf');
+}
+
+// Función para imprimir el reporte
 function imprimirReporte() {
   const contenido = document.getElementById('resultado-container').innerHTML;
   const win = window.open('', '', 'width=800,height=600');
@@ -170,7 +184,7 @@ function imprimirReporte() {
       </style>
     </head>
     <body>
-      <img src="60ff9dfe-dcc4-4cf8-9d61-1eeb59b16d2e.png" class="logo" />
+      <img src="https://i.imgur.com/aA7RzTN.png" class="logo" />
       ${contenido}
     </body>
     </html>`);
@@ -179,25 +193,38 @@ function imprimirReporte() {
   setTimeout(() => win.print(), 1000);
 }
 
+// Función para guardar en Firebase
 function guardarEnFirebase(data) {
   document.body.classList.add('loading');
-  db.collection("reportes").add({ ...data, timestamp: new Date().toISOString() })
-    .then(() => {
-      console.log("Guardado en Firebase");
-      document.body.classList.remove('loading');
-    })
-    .catch(e => {
-      console.error("Error al guardar", e);
-      document.body.classList.remove('loading');
-    });
+  db.collection("reportes").add({ 
+    ...data, 
+    timestamp: new Date().toISOString() 
+  })
+  .then(() => {
+    console.log("Guardado en Firebase");
+    document.body.classList.remove('loading');
+  })
+  .catch(e => {
+    console.error("Error al guardar", e);
+    document.body.classList.remove('loading');
+  });
 }
 
-function toggleDarkMode() {
-  document.body.classList.toggle('dark-mode');
+// Función para ver estadísticas (placeholder)
+function verEstadisticas() {
+  alert('Función de estadísticas en desarrollo');
 }
 
-window.onload = () => {
+// Inicialización al cargar la página
+window.onload = function() {
   actualizarSugerencias('medico', 'medicosList');
   actualizarSugerencias('instrumentador', 'instrumentadoresList');
   actualizarSugerencias('lugarCirugia', 'lugaresList');
+  
+  // Cargar último reporte si existe
+  const ultimoReporte = localStorage.getItem('ultimoReporte');
+  if (ultimoReporte) {
+    document.getElementById('resultado-container').innerHTML = ultimoReporte;
+    document.getElementById('resultado-container').style.display = 'block';
+  }
 };
