@@ -6,47 +6,101 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
-      authDomain: "cirugia-reporte.firebaseapp.com",
-      projectId: "cirugia-reporte",
-      storageBucket: "cirugia-reporte.firebasestorage.app",
-      messagingSenderId: "698831567840",
-      appId: "1:698831567840:web:fc6d6197f22beba4d88985",
-      measurementId: "G-HD7ZLL1GLZ"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    window.onload = () => {
-      const tbody = document.getElementById("reporte-rows");
-      db.collection("reportes").orderBy("timestamp", "desc").get().then(snapshot => {
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${data.paciente || ''}</td>
-            <td>${data.medico || ''}</td>
-            <td>${data.tipoCirugia || ''}</td>
-            <td>${new Date(data.fechaCirugia).toLocaleDateString("es-AR")}</td>
-            <td>${data.material || ''}</td>`;
-          tbody.appendChild(tr);
-        });
-      });
-    };
-  </script>
+  <style>
+    .spinner {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      border: 6px solid #ccc;
+      border-top-color: #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      z-index: 9999;
+    }
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    .search-box {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .search-box input {
+      padding: 10px;
+      width: 300px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Panel de Reportes Enviados</h2>
-    <table>
-      <thead>
-        <tr><th>Paciente</th><th>Médico</th><th>Tipo</th><th>Fecha</th><th>Material</th></tr>
-      </thead>
-      <tbody id="reporte-rows"></tbody>
-    </table>
-    <a href="index.html">← Volver al formulario</a>
+<div class="spinner" id="spinner"></div>
+<div class="container">
+  <h2>Panel de Reportes Enviados</h2>
+  <div class="search-box">
+    <input type="text" id="buscador" placeholder="Buscar por paciente, médico o tipo..." />
   </div>
+  <table>
+    <thead>
+      <tr><th>Paciente</th><th>Médico</th><th>Tipo</th><th>Fecha</th><th>Material</th></tr>
+    </thead>
+    <tbody id="reporte-rows"></tbody>
+  </table>
+  <a href="index.html">← Volver al formulario</a>
+</div>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
+    authDomain: "cirugia-reporte.firebaseapp.com",
+    projectId: "cirugia-reporte",
+    storageBucket: "cirugia-reporte.firebasestorage.app",
+    messagingSenderId: "698831567840",
+    appId: "1:698831567840:web:fc6d6197f22beba4d88985",
+    measurementId: "G-HD7ZLL1GLZ"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const spinner = document.getElementById("spinner");
+  const tbody = document.getElementById("reporte-rows");
+  const buscador = document.getElementById("buscador");
+  let datosTotales = [];
+
+  function mostrarFiltrados(texto) {
+    tbody.innerHTML = '';
+    const filtro = texto.toLowerCase();
+    const resultados = datosTotales.filter(d => {
+      return (d.paciente || '').toLowerCase().includes(filtro)
+          || (d.medico || '').toLowerCase().includes(filtro)
+          || (d.tipoCirugia || '').toLowerCase().includes(filtro);
+    });
+    resultados.forEach(data => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${data.paciente || ''}</td>
+        <td>${data.medico || ''}</td>
+        <td>${data.tipoCirugia || ''}</td>
+        <td>${new Date(data.fechaCirugia).toLocaleDateString("es-AR")}</td>
+        <td>${data.material || ''}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  buscador.addEventListener('input', e => {
+    mostrarFiltrados(e.target.value);
+  });
+
+  window.onload = () => {
+    spinner.style.display = 'block';
+    db.collection("reportes").orderBy("timestamp", "desc").get().then(snapshot => {
+      datosTotales = snapshot.docs.map(doc => doc.data());
+      mostrarFiltrados('');
+      spinner.style.display = 'none';
+    });
+  };
+</script>
 </body>
 </html>
