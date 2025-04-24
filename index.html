@@ -99,169 +99,174 @@
     // Cargar tipos de cirugía desde el JSON
     document.addEventListener('DOMContentLoaded', function() {
       const tipoCirugiaSelect = document.getElementById('tipoCirugia');
-      
-      fetch('tipos_cirugia.json')
-        .then(response => response.json())
-        .then(data => {
-          data.forEach(tipo => {
-            const option = document.createElement('option');
-            option.value = tipo;
-            option.textContent = tipo;
-            tipoCirugiaSelect.appendChild(option);
-          });
-        })
-        .catch(error => console.error('Error al cargar tipos de cirugía:', error));
+   <!-- En index.html, reemplazar el script existente por este: -->
+<script>
+  // Configuración de Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
+    authDomain: "cirugia-reporte.firebaseapp.com",
+    projectId: "cirugia-reporte",
+    storageBucket: "cirugia-reporte.appspot.com",
+    messagingSenderId: "698831567840",
+    appId: "1:698831567840:web:fc6d6197f22beba4d88985",
+    measurementId: "G-HD7ZLL1GLZ"
+  };
 
-      // Configurar eventos de los botones
-      document.getElementById('generarBtn').addEventListener('click', generarReporte);
-      document.getElementById('guardarBtn').addEventListener('click', guardarReporte);
-      document.getElementById('limpiarBtn').addEventListener('click', limpiarFormulario);
-      document.getElementById('copiarBtn').addEventListener('click', copiarReporte);
-    });
+  // Inicializar Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-    // Función para generar el reporte
-    function generarReporte() {
-      const paciente = document.getElementById('paciente').value;
-      const medico = document.getElementById('medico').value;
-      const fechaCirugia = document.getElementById('fechaCirugia').value;
-      const tipoCirugia = document.getElementById('tipoCirugia').value;
-      const material = document.getElementById('material').value;
-      const formato = document.querySelector('input[name="formato"]:checked').value;
-
-      if (!paciente || !medico || !fechaCirugia || !tipoCirugia || !material) {
-        alert('Por favor complete todos los campos obligatorios');
-        return;
-      }
-
-      const fechaFormateada = new Date(fechaCirugia).toLocaleDateString('es-AR');
-      
-      let reporteTexto = '';
-      
-      // Generar reporte según el formato seleccionado
-      switch(formato) {
-        case 'formal':
-          reporteTexto = `
-            <div class="formato-formal">
-              <p><strong>Estimados,</strong></p>
-              <p>Adjunto detalles de la cirugía programada:</p>
-              <ul>
-                <li><strong>Paciente:</strong> ${paciente}</li>
-                <li><strong>Médico:</strong> ${medico}</li>
-                <li><strong>Fecha de Cirugía:</strong> ${fechaFormateada}</li>
-                <li><strong>Tipo de Cirugía:</strong> ${tipoCirugia}</li>
-              </ul>
-              
-              <p><strong>Material Requerido:</strong></p>
-              <p>${material}</p>
-              
-              <p>Saludos cordiales,</p>
-              <p>Districorr</p>
-            </div>
-          `;
-          break;
-          
-        case 'moderno':
-          reporteTexto = `
-            <div class="formato-moderno">
-              <h4>Reporte de Cirugía - Districorr</h4>
-              <div style="margin: 15px 0;">
-                <p><strong>Paciente:</strong> ${paciente}</p>
-                <p><strong>Médico:</strong> ${medico}</p>
-                <p><strong>Fecha:</strong> ${fechaFormateada}</p>
-                <p><strong>Procedimiento:</strong> ${tipoCirugia}</p>
-              </div>
-              
-              <h5>Materiales solicitados:</h5>
-              <div style="background: #f5f5f5; padding: 10px; border-radius: 5px;">
-                ${material.split('\n').map(item => `<p>• ${item}</p>`).join('')}
-              </div>
-            </div>
-          `;
-          break;
-          
-        case 'casual':
-          reporteTexto = `
-            <div class="formato-casual">
-              <p>Hola equipo,</p>
-              <p>Les comparto los datos para la cirugía:</p>
-              
-              <div style="margin-left: 20px;">
-                <p>👉 <strong>Paciente:</strong> ${paciente}</p>
-                <p>👉 <strong>Dr./Dra.:</strong> ${medico}</p>
-                <p>👉 <strong>Día:</strong> ${fechaFormateada}</p>
-                <p>👉 <strong>Cirugía:</strong> ${tipoCirugia}</p>
-              </div>
-              
-              <p>Necesitamos este material:</p>
-              <div style="background: #e8f5e9; padding: 10px; border-radius: 5px;">
-                ${material.split('\n').map(item => `<p>✔ ${item}</p>`).join('')}
-              </div>
-              
-              <p>¡Gracias!</p>
-            </div>
-          `;
-          break;
-      }
-
-      // Mostrar el reporte generado
-      document.getElementById('reporteTexto').innerHTML = reporteTexto;
-      document.getElementById('reporteGenerado').style.display = 'block';
-    }
-
-    // Función para guardar el reporte en Firebase
-    function guardarReporte() {
-      const paciente = document.getElementById('paciente').value;
-      const medico = document.getElementById('medico').value;
-      const fechaCirugia = document.getElementById('fechaCirugia').value;
-      const tipoCirugia = document.getElementById('tipoCirugia').value;
-      const material = document.getElementById('material').value;
-      
-      if (!paciente || !medico || !fechaCirugia || !tipoCirugia || !material) {
-        alert('Por favor complete todos los campos obligatorios');
-        return;
-      }
-
-      // Mostrar spinner
-      document.getElementById('spinner').style.display = 'block';
-      
-      // Guardar en Firestore
-      db.collection("reportes").add({
-        paciente: paciente,
-        medico: medico,
-        fechaCirugia: fechaCirugia,
-        tipoCirugia: tipoCirugia,
-        material: material,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      })
-      .then(() => {
-        alert('Reporte guardado exitosamente!');
-        document.getElementById('spinner').style.display = 'none';
-      })
-      .catch(error => {
-        console.error("Error al guardar:", error);
-        alert('Error al guardar el reporte');
-        document.getElementById('spinner').style.display = 'none';
+  document.addEventListener('DOMContentLoaded', function() {
+    // Cargar tipos de cirugía
+    const tipoCirugiaSelect = document.getElementById('tipoCirugia');
+    fetch('tipos_cirugia.json')
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(tipo => {
+          const option = document.createElement('option');
+          option.value = tipo;
+          option.textContent = tipo;
+          tipoCirugiaSelect.appendChild(option);
+        });
       });
+
+    // Configurar eventos
+    document.getElementById('generarBtn').addEventListener('click', generarReporte);
+    document.getElementById('guardarBtn').addEventListener('click', guardarReporte);
+    document.getElementById('limpiarBtn').addEventListener('click', limpiarFormulario);
+    document.getElementById('copiarBtn').addEventListener('click', copiarReporte);
+  });
+
+  function obtenerDatos() {
+    return {
+      paciente: document.getElementById('paciente').value,
+      medico: document.getElementById('medico').value,
+      lugarCirugia: document.getElementById('lugarCirugia').value,
+      fechaCirugia: document.getElementById('fechaCirugia').value,
+      tipoCirugia: document.getElementById('tipoCirugia').value,
+      material: document.getElementById('material').value,
+      mensajeInicio: document.getElementById('mensajeInicio').value,
+      formato: document.querySelector('input[name="formato"]:checked').value
+    };
+  }
+
+  function generarReporte() {
+    const d = obtenerDatos();
+    const fechaFormateada = new Date(d.fechaCirugia).toLocaleDateString('es-AR');
+    
+    let reporteTexto = '';
+    
+    switch(d.formato) {
+      case 'formal':
+        reporteTexto = `
+          <div class="formato-formal">
+            <p><strong>${d.mensajeInicio || 'Estimados,'}</strong></p>
+            <p>Adjunto detalles de la cirugía programada:</p>
+            <ul>
+              <li><strong>Paciente:</strong> ${d.paciente}</li>
+              <li><strong>Médico:</strong> ${d.medico}</li>
+              <li><strong>Lugar de Cirugía:</strong> ${d.lugarCirugia || 'No especificado'}</li>
+              <li><strong>Fecha de Cirugía:</strong> ${fechaFormateada}</li>
+              <li><strong>Tipo de Cirugía:</strong> ${d.tipoCirugia}</li>
+            </ul>
+            <p><strong>Material Requerido:</strong></p>
+            <p>${d.material}</p>
+            <p>Saludos cordiales,</p>
+            <p>Districorr</p>
+          </div>`;
+        break;
+        
+      case 'moderno':
+        reporteTexto = `
+          <div class="formato-moderno">
+            <h4>Reporte de Cirugía - Districorr</h4>
+            <p>${d.mensajeInicio || 'Detalles de la cirugía:'}</p>
+            <div style="margin: 15px 0;">
+              <p><strong>Paciente:</strong> ${d.paciente}</p>
+              <p><strong>Médico:</strong> ${d.medico}</p>
+              <p><strong>Lugar:</strong> ${d.lugarCirugia || 'No especificado'}</p>
+              <p><strong>Fecha:</strong> ${fechaFormateada}</p>
+              <p><strong>Procedimiento:</strong> ${d.tipoCirugia}</p>
+            </div>
+            <h5>Materiales solicitados:</h5>
+            <div style="background: #f5f5f5; padding: 10px; border-radius: 5px;">
+              ${d.material.split('\n').map(item => `<p>• ${item}</p>`).join('')}
+            </div>
+          </div>`;
+        break;
+        
+      case 'casual':
+        reporteTexto = `
+          <div class="formato-casual">
+            <p>${d.mensajeInicio || 'Hola equipo,'}</p>
+            <p>Les comparto los datos para la cirugía:</p>
+            <div style="margin-left: 20px;">
+              <p>👉 <strong>Paciente:</strong> ${d.paciente}</p>
+              <p>👉 <strong>Dr./Dra.:</strong> ${d.medico}</p>
+              <p>👉 <strong>Lugar:</strong> ${d.lugarCirugia || 'No especificado'}</p>
+              <p>👉 <strong>Día:</strong> ${fechaFormateada}</p>
+              <p>👉 <strong>Cirugía:</strong> ${d.tipoCirugia}</p>
+            </div>
+            <p>Necesitamos este material:</p>
+            <div style="background: #e8f5e9; padding: 10px; border-radius: 5px;">
+              ${d.material.split('\n').map(item => `<p>✔ ${item}</p>`).join('')}
+            </div>
+            <p>¡Gracias!</p>
+          </div>`;
+        break;
     }
 
-    // Función para copiar el reporte al portapapeles
-    function copiarReporte() {
-      const reporteTexto = document.getElementById('reporteTexto');
-      const range = document.createRange();
-      range.selectNode(reporteTexto);
-      window.getSelection().removeAllRanges();
-      window.getSelection().addRange(range);
-      document.execCommand('copy');
-      window.getSelection().removeAllRanges();
-      
-      alert('Reporte copiado al portapapeles!');
+    document.getElementById('reporteTexto').innerHTML = reporteTexto;
+    document.getElementById('reporteGenerado').style.display = 'block';
+  }
+
+  function guardarReporte() {
+    const d = obtenerDatos();
+    
+    if (!d.paciente || !d.medico || !d.fechaCirugia || !d.tipoCirugia || !d.material) {
+      alert('Por favor complete todos los campos obligatorios');
+      return;
     }
 
-    // Función para limpiar el formulario
-    function limpiarFormulario() {
-      document.getElementById('reporteForm').reset();
-      document.getElementById('reporteGenerado').style.display = 'none';
-    }
-  </script>
+    document.getElementById('spinner').style.display = 'block';
+    
+    db.collection("reportes").add({
+      paciente: d.paciente,
+      medico: d.medico,
+      lugarCirugia: d.lugarCirugia,
+      fechaCirugia: d.fechaCirugia,
+      tipoCirugia: d.tipoCirugia,
+      material: d.material,
+      mensajeInicio: d.mensajeInicio,
+      formato: d.formato,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+      alert('Reporte guardado exitosamente!');
+      document.getElementById('spinner').style.display = 'none';
+    })
+    .catch(error => {
+      console.error("Error al guardar:", error);
+      alert('Error al guardar el reporte');
+      document.getElementById('spinner').style.display = 'none';
+    });
+  }
+
+  function copiarReporte() {
+    const reporteTexto = document.getElementById('reporteTexto');
+    const range = document.createRange();
+    range.selectNode(reporteTexto);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    alert('Reporte copiado al portapapeles!');
+  }
+
+  function limpiarFormulario() {
+    document.getElementById('reporteForm').reset();
+    document.getElementById('reporteGenerado').style.display = 'none';
+  }
+</script>
 </body>
 </html>
