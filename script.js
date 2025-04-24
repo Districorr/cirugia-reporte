@@ -1,5 +1,7 @@
 // NUEVO SCRIPT COMPLETO con mejoras: sin botones duplicados, compartir por WhatsApp, imagen, email, imprimir, dark mode, animaciones, historial local, colores por formato, loading indicator
 
+console.log('script.js cargado correctamente');
+
 function actualizarSugerencias(idInput, idList) {
   const input = document.getElementById(idInput);
   const list = document.getElementById(idList);
