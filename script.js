@@ -113,11 +113,11 @@ function generarTexto() {
   resultado.innerHTML = `
     <div class="reporte-box">
       ${texto}
-      <div class="text-center">
-        <button onclick="copiarTexto()">Copiar y Guardar</button>
-        <button onclick="descargarPDF()">Descargar PDF</button>
-        <button onclick="compartirWhatsApp()">Compartir por WhatsApp</button>
-      </div>
+  <div class="text-center">
+  <button onclick="copiarTexto()">Copiar y Guardar</button>
+  <button onclick="descargarPDF()">Descargar PDF</button>
+  <button onclick="compartirWhatsApp()">Compartir por WhatsApp</button>
+</div>
     </div>`;
 }
 
