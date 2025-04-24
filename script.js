@@ -25,7 +25,6 @@ function actualizarSugerencias(idInput, idList) {
 
   actualizarLista();
 }
-
 function obtenerDatos() {
   return {
     paciente: document.getElementById('paciente').value,
