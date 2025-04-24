@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Estadísticas de Cirugías | Districorr</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <style>
+    canvas { max-width: 800px; margin: 30px auto; display: block; }
+    .export-buttons { text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2 class="text-center">📊 Estadísticas Mensuales de Cirugías</h2>
+  <canvas id="chartCirugias"></canvas>
+  <canvas id="chartTipos"></canvas>
+  <canvas id="chartMedicos"></canvas>
+  <div class="export-buttons">
+    <button onclick="exportarExcel()">📥 Exportar a Excel</button>
+    <button onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
+  </div>
+  <div class="text-center">
+    <a href="index.html" class="btn-link">← Volver al formulario</a>
+  </div>
+</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
+  authDomain: "cirugia-reporte.firebaseapp.com",
+  projectId: "cirugia-reporte",
+  storageBucket: "cirugia-reporte.firebasestorage.app",
+  messagingSenderId: "698831567840",
+  appId: "1:698831567840:web:fc6d6197f22beba4d88985",
+  measurementId: "G-HD7ZLL1GLZ"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let datosExportar = [];
+
+function agrupar(data, campo) {
+  const agrupado = {};
+  data.forEach(item => {
+    const clave = item[campo] || 'No especificado';
+    agrupado[clave] = (agrupado[clave] || 0) + 1;
+  });
+  return agrupado;
+}
+
+function agruparPorMes(data) {
+  const agrupado = {};
+  data.forEach(item => {
+    const fecha = new Date(item.fechaCirugia);
+    if (isNaN(fecha)) return;
+    const mes = fecha.toLocaleDateString('es-AR', { year: 'numeric', month: 'short' });
+    agrupado[mes] = (agrupado[mes] || 0) + 1;
+  });
+  return agrupado;
+}
+
+function generarGrafico(id, titulo, datos, color = '#42a5f5') {
+  const labels = Object.keys(datos);
+  const valores = Object.values(datos);
+  new Chart(document.getElementById(id), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{ label: titulo, data: valores, backgroundColor: color }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: titulo }
+      }
+    }
+  });
+}
+
+function cargarDatos() {
+  db.collection("reportes").get().then(snapshot => {
+    const datos = [];
+    snapshot.forEach(doc => datos.push(doc.data()));
+    datosExportar = datos;
+
+    generarGrafico('chartCirugias', 'Cirugías por Mes', agruparPorMes(datos));
+    generarGrafico('chartTipos', 'Cirugías por Tipo', agrupar(datos, 'tipoCirugia'), '#66bb6a');
+    generarGrafico('chartMedicos', 'Cirugías por Médico', agrupar(datos, 'medico'), '#ffa726');
+  });
+}
+
+function exportarExcel() {
+  const ws = XLSX.utils.json_to_sheet(datosExportar);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Reportes");
+  XLSX.writeFile(wb, "reportes_cirugia.xlsx");
+}
+
+cargarDatos();
+</script>
+</body>
+</html>
