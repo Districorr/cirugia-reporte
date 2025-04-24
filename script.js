@@ -152,13 +152,27 @@ function enviarPorEmail() {
 }
 
 function imprimirReporte() {
-  const printContent = document.getElementById('resultado-container').innerHTML;
-  const ventana = window.open('', '', 'height=600,width=800');
-  ventana.document.write('<html><head><title>Reporte de Cirugía</title></head><body>');
-  ventana.document.write(printContent);
-  ventana.document.write('</body></html>');
-  ventana.document.close();
-  ventana.print();
+  const contenido = document.getElementById('resultado-container').innerHTML;
+  const win = window.open('', '', 'width=800,height=600');
+  win.document.write(`
+    <html>
+    <head>
+      <title>Reporte de Cirugía</title>
+      <link href="style.css" rel="stylesheet" />
+      <style>
+        body { font-family: 'Lato', sans-serif; padding: 20px; }
+        img.logo { max-width: 120px; margin-bottom: 10px; }
+      </style>
+    </head>
+    <body>
+      <img src="60ff9dfe-dcc4-4cf8-9d61-1eeb59b16d2e.png" class="logo" />
+      ${contenido}
+    </body>
+    </html>`);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 1000);
+}
 }
 
 function guardarEnFirebase(data) {
