@@ -29,15 +29,35 @@ fetch('tipos_cirugia.json')
   .then(response => response.json())
   .then(data => {
     const datalist = document.getElementById('tiposCirugia');
-    datalist.innerHTML = '';
-    data.forEach(tipo => {
-      const option = document.createElement('option');
-      option.value = tipo;
-      datalist.appendChild(option);
+    const input = document.getElementById('tipoCirugia');
+    const key = 'ranking_tiposCirugia';
+
+    function actualizarDatalist() {
+      const ranking = JSON.parse(localStorage.getItem(key) || '{}');
+      const ordenados = [...data].sort((a, b) => (ranking[b] || 0) - (ranking[a] || 0));
+      datalist.innerHTML = '';
+      ordenados.forEach(tipo => {
+        const option = document.createElement('option');
+        option.value = tipo;
+        datalist.appendChild(option);
+      });
+    }
+
+    input.addEventListener('change', () => {
+      const valor = input.value.trim();
+      if (!valor) return;
+      const ranking = JSON.parse(localStorage.getItem(key) || '{}');
+      ranking[valor] = (ranking[valor] || 0) + 1;
+      localStorage.setItem(key, JSON.stringify(ranking));
+      actualizarDatalist();
     });
+
+    actualizarDatalist();
   })
   .catch(err => console.error('Error cargando tipos de cirugía:', err));
 </script>
+<script src="script.js"></script>
+
 <body>
   <div class="container">
     <header>
