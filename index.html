@@ -15,7 +15,19 @@
       <img src="https://i.imgur.com/aA7RzTN.png" alt="Districorr Logo" class="logo-header">
       <h2>Generador de Reportes de Cirugía</h2>
     </header>
-
+ <div class="form-group">
+        <label>Formato del Reporte:</label>
+        <div>
+          <input type="radio" id="formal" name="formato" value="formal" checked>
+          <label for="formal">Formal</label>
+          
+          <input type="radio" id="moderno" name="formato" value="moderno">
+          <label for="moderno">Moderno</label>
+          
+          <input type="radio" id="casual" name="formato" value="casual">
+          <label for="casual">Casual</label>
+        </div>
+      </div>
     <form id="reporteForm">
       <div class="form-group">
         <label for="paciente">Paciente:</label>
@@ -46,20 +58,6 @@
       <div class="form-group">
         <label for="material">Material Requerido:</label>
         <textarea id="material" class="form-control" rows="4" required></textarea>
-      </div>
-
-      <div class="form-group">
-        <label>Formato del Reporte:</label>
-        <div>
-          <input type="radio" id="formal" name="formato" value="formal" checked>
-          <label for="formal">Formal</label>
-          
-          <input type="radio" id="moderno" name="formato" value="moderno">
-          <label for="moderno">Moderno</label>
-          
-          <input type="radio" id="casual" name="formato" value="casual">
-          <label for="casual">Casual</label>
-        </div>
       </div>
 
       <div class="form-group text-center">
