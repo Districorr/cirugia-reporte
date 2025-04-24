@@ -116,7 +116,12 @@ function generarTexto() {
   const resultado = document.getElementById('resultado-container');
   resultado.style.display = 'block';
   resultado.className = `reporte-box ${claseFormato}`;
-  resultado.innerHTML = texto;
+  resultado.innerHTML = `
+  <div class="reporte-box">
+    <img src="60ff9dfe-dcc4-4cf8-9d61-1eeb59b16d2e.png" alt="Logo Districorr" style="max-width: 100px; margin-bottom: 10px;" />
+    ${texto}
+  </div>
+`;
 
   localStorage.setItem('ultimoReporte', texto);
 }
