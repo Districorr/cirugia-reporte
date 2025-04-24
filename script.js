@@ -201,4 +201,3 @@ window.onload = () => {
   actualizarSugerencias('instrumentador', 'instrumentadoresList');
   actualizarSugerencias('lugarCirugia', 'lugaresList');
 };
-
