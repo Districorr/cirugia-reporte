@@ -14,6 +14,8 @@
       background-color: #f9f9f9;
       color: #333;
       font-family: 'Lato', sans-serif;
+      margin: 0;
+      padding: 20px;
     }
     @media (prefers-color-scheme: dark) {
       body {
@@ -42,14 +44,22 @@
       to { transform: translate(-50%, -50%) rotate(360deg); }
     }
     .logo-header {
-      max-width: 120px;
+      max-width: 100px;
       height: auto;
       display: block;
       margin: 10px auto;
     }
+    .container {
+      background-color: white;
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
     header h4 {
       text-align: center;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       margin-bottom: 20px;
     }
     .form-group label {
@@ -59,19 +69,35 @@
     }
     .form-control {
       width: 100%;
-      max-width: 100%;
-      padding: 8px;
+      padding: 10px;
       font-size: 1rem;
       margin-bottom: 15px;
       border-radius: 6px;
       border: 1px solid #ccc;
     }
-    .text-center button, .text-center a {
-      margin: 5px 5px;
+    .text-center {
+      text-align: center;
+      margin-top: 10px;
     }
-    .btn-link {
+    .text-center button, .text-center a {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
       text-decoration: none;
-      color: #007bff;
+      font-size: 0.95rem;
+    }
+    .text-center button:hover, .text-center a:hover {
+      background-color: #0056b3;
+    }
+    .credit {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
     }
   </style>
 </head>
@@ -83,28 +109,6 @@
     <h4>Generador de Reportes de Cirugía Districorr</h4>
   </header>
 
-  <div class="form-group">
-    <label>Paciente</label>
-    <input id="paciente" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label>Médico</label>
-    <input id="medico" class="form-control" list="medicosList" />
-    <datalist id="medicosList"></datalist>
-  </div>
-  <div class="form-group">
-    <label>Fecha de Cirugía</label>
-    <input type="date" id="fechaCirugia" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label>Tipo de Cirugía</label>
-    <input id="tipoCirugia" class="form-control" list="tiposCirugia" />
-    <datalist id="tiposCirugia"></datalist>
-  </div>
-  <div class="form-group">
-    <label>Material Requerido</label>
-    <textarea id="material" class="form-control"></textarea>
-  </div>
   <div class="form-group">
     <label>Formato de Texto</label>
     <select id="formato" class="form-control">
@@ -120,6 +124,36 @@
       <option>Equipo, Verifiquen stock para el procedimiento</option>
     </select>
   </div>
+  <div class="form-group">
+    <label>Paciente</label>
+    <input id="paciente" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label>Médico</label>
+    <input id="medico" class="form-control" list="medicosList" />
+    <datalist id="medicosList"></datalist>
+  </div>
+  <div class="form-group">
+    <label>Lugar de Cirugía</label>
+    <input id="lugar" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label>Instrumentador</label>
+    <input id="instrumentador" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label>Fecha de Cirugía</label>
+    <input type="date" id="fechaCirugia" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label>Tipo de Cirugía</label>
+    <input id="tipoCirugia" class="form-control" list="tiposCirugia" />
+    <datalist id="tiposCirugia"></datalist>
+  </div>
+  <div class="form-group">
+    <label>Material Requerido</label>
+    <textarea id="material" class="form-control"></textarea>
+  </div>
 
   <div class="text-center">
     <button onclick="generarTexto()">Generar Texto</button>
@@ -127,8 +161,8 @@
     <button onclick="compartirWhatsApp()">Enviar WhatsApp</button>
     <button onclick="enviarPorEmail()">Enviar Email</button>
     <button onclick="imprimirReporte()">Imprimir / PDF</button>
-    <a href="admin.html" class="btn-link">📁 Ver Reportes</a>
-    <a href="estadisticas.html" class="btn-link">📊 Ver Estadísticas</a>
+    <a href="admin.html">📁 Ver Reportes</a>
+    <a href="estadisticas.html">📊 Ver Estadísticas</a>
   </div>
 
   <div id="resultado-container" style="display:none;"></div>
