@@ -1,73 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Reportes guardados | Districorr</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <style>
-    .spinner {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 50px;
-      height: 50px;
-      border: 6px solid #ccc;
-      border-top-color: #007bff;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      z-index: 9999;
-    }
-    @keyframes spin {
-      to { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    th {
-      background-color: #007bff;
-      color: white;
-    }
-
-    tbody tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-
-    body.dark-mode th {
-      background-color: #333;
-    }
-
-    body.dark-mode tbody tr:nth-child(even) {
-      background-color: #2a2a2a;
-    }
-  </style>
 </head>
 <body>
   <div class="spinner" id="spinner"></div>
   <div class="container">
     <header>
-      <img src="https://i.imgur.com/aA7RzTN.png" alt="Districorr Logo" class="logo-header" />
+      <img src="https://i.imgur.com/aA7RzTN.png" alt="Districorr Logo" class="logo-header">
       <h2>Panel de Reportes Enviados</h2>
     </header>
+    
+    <div style="margin-bottom: 20px;">
+      <input type="text" id="searchInput" placeholder="Buscar reportes..." class="form-control">
+    </div>
+    
     <table>
       <thead>
-        <tr><th>Paciente</th><th>Médico</th><th>Tipo</th><th>Fecha</th><th>Material</th></tr>
+        <tr>
+          <th>Paciente</th>
+          <th>Médico</th>
+          <th>Tipo</th>
+          <th>Fecha</th>
+          <th>Material</th>
+          <th>Acciones</th>
+        </tr>
       </thead>
-      <tbody id="reporte-rows"></tbody>
+      <tbody id="reporte-rows">
+        <tr>
+          <td colspan="6" style="text-align: center;">Cargando reportes...</td>
+        </tr>
+      </tbody>
     </table>
+    
     <div class="text-center" style="margin-top: 20px;">
       <a href="index.html" class="btn-link">← Volver al formulario</a>
     </div>
@@ -78,36 +47,86 @@
       apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
       authDomain: "cirugia-reporte.firebaseapp.com",
       projectId: "cirugia-reporte",
-      storageBucket: "cirugia-reporte.firebasestorage.app",
+      storageBucket: "cirugia-reporte.appspot.com",
       messagingSenderId: "698831567840",
       appId: "1:698831567840:web:fc6d6197f22beba4d88985",
       measurementId: "G-HD7ZLL1GLZ"
     };
+    
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-
     const spinner = document.getElementById("spinner");
     const tbody = document.getElementById("reporte-rows");
+    const searchInput = document.getElementById("searchInput");
 
-    window.onload = () => {
+    // Cargar reportes
+    function cargarReportes(busqueda = "") {
       spinner.style.display = 'block';
-      db.collection("reportes").orderBy("timestamp", "desc").get().then(snapshot => {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Cargando reportes...</td></tr>';
+      
+      let query = db.collection("reportes").orderBy("timestamp", "desc");
+      
+      query.get().then(snapshot => {
+        tbody.innerHTML = '';
+        
+        if (snapshot.empty) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No se encontraron reportes</td></tr>';
+          spinner.style.display = 'none';
+          return;
+        }
+        
         snapshot.forEach(doc => {
           const data = doc.data();
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${data.paciente || ''}</td>
-            <td>${data.medico || ''}</td>
-            <td>${data.tipoCirugia || ''}</td>
-            <td>${new Date(data.fechaCirugia).toLocaleDateString("es-AR")}</td>
-            <td>${data.material || ''}</td>`;
-          tbody.appendChild(tr);
+          const paciente = data.paciente || '';
+          const medico = data.medico || '';
+          const tipoCirugia = data.tipoCirugia || '';
+          
+          // Filtrar por búsqueda
+          if (busqueda === "" || 
+              paciente.toLowerCase().includes(busqueda.toLowerCase()) || 
+              medico.toLowerCase().includes(busqueda.toLowerCase()) ||
+              tipoCirugia.toLowerCase().includes(busqueda.toLowerCase())) {
+            
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>${paciente}</td>
+              <td>${medico}</td>
+              <td>${tipoCirugia}</td>
+              <td>${new Date(data.fechaCirugia).toLocaleDateString("es-AR")}</td>
+              <td>${data.material || ''}</td>
+              <td>
+                <button class="btn-link" onclick="verDetalle('${doc.id}')">Ver</button>
+              </td>`;
+            tbody.appendChild(tr);
+          }
         });
+        
+        if (tbody.innerHTML === '') {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No se encontraron resultados</td></tr>';
+        }
+        
         spinner.style.display = 'none';
       }).catch(error => {
         console.error("Error al cargar reportes:", error);
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error al cargar los reportes</td></tr>';
         spinner.style.display = 'none';
       });
+    }
+
+    // Función para ver detalle (puedes implementar un modal)
+    function verDetalle(id) {
+      // Implementar lógica para mostrar detalles completos
+      alert('Mostrar detalles del reporte con ID: ' + id);
+    }
+
+    // Evento de búsqueda
+    searchInput.addEventListener('input', (e) => {
+      cargarReportes(e.target.value);
+    });
+
+    // Cargar reportes al iniciar
+    window.onload = () => {
+      cargarReportes();
     };
   </script>
 </body>
