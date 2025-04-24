@@ -178,16 +178,6 @@ function imprimirReporte() {
   win.focus();
   setTimeout(() => win.print(), 1000);
 }
-function generarImagen() {
-  const contenedor = document.getElementById('resultado-container');
-  html2canvas(contenedor).then(canvas => {
-    const link = document.createElement('a');
-    link.download = 'Reporte_Cirugia.png';
-    link.href = canvas.toDataURL();
-    link.click();
-  });
-}
-
 
 function guardarEnFirebase(data) {
   document.body.classList.add('loading');
@@ -210,7 +200,5 @@ window.onload = () => {
   actualizarSugerencias('medico', 'medicosList');
   actualizarSugerencias('instrumentador', 'instrumentadoresList');
   actualizarSugerencias('lugarCirugia', 'lugaresList');
- 
-  }
 };
 
