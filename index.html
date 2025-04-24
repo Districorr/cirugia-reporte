@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generador de Reportes de Cirugía Districorr</title>
+  <link rel="icon" href="https://i.imgur.com/aA7RzTN.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Lato&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
+      authDomain: "cirugia-reporte.firebaseapp.com",
+      projectId: "cirugia-reporte",
+      storageBucket: "cirugia-reporte.firebasestorage.app",
+      messagingSenderId: "698831567840",
+      appId: "1:698831567840:web:fc6d6197f22beba4d88985",
+      measurementId: "G-HD7ZLL1GLZ"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+</head>
+<script>
+fetch('tipos_cirugia.json')
+  .then(response => response.json())
+  .then(data => {
+    const datalist = document.getElementById('tiposCirugia');
+    const input = document.getElementById('tipoCirugia');
+    const key = 'ranking_tiposCirugia';
+
+    function actualizarDatalist() {
+      const ranking = JSON.parse(localStorage.getItem(key) || '{}');
+      const ordenados = [...data].sort((a, b) => (ranking[b] || 0) - (ranking[a] || 0));
+      datalist.innerHTML = '';
+      ordenados.forEach(tipo => {
+        const option = document.createElement('option');
+        option.value = tipo;
+        datalist.appendChild(option);
+      });
+    }
+
+    input.addEventListener('change', () => {
+      const valor = input.value.trim();
+      if (!valor) return;
+      const ranking = JSON.parse(localStorage.getItem(key) || '{}');
+      ranking[valor] = (ranking[valor] || 0) + 1;
+      localStorage.setItem(key, JSON.stringify(ranking));
+      actualizarDatalist();
+    });
+
+    actualizarDatalist();
+  })
+  .catch(err => console.error('Error cargando tipos de cirugía:', err));
+</script>
+<script src="script.js"></script>
+
+<body>
+  <div class="container">
+    <header>
+      <img src="https://i.imgur.com/aA7RzTN.png" class="logo-header" alt="Logo Districorr" />
+      <h4 class="text-primary font-weight-bold">Generador de Reportes de Cirugía Districorr</h4>
+    </header>
+
+    <div class="form-group">
+      <label>Formato de Texto</label>
+      <select id="formato" class="form-control">
+        <option value="formal">Formal</option>
+        <option value="moderno">Moderno</option>
+        <option value="casual">Detallado</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Mensaje de Inicio</label>
+      <select id="mensajeInicio" class="form-control">
+        <option>Estimados, Adjunto detalles de la cirugia programada</option>
+        <option>Estimados, Informo las novedades de la cirugia ya programada</option>
+        <option>Estimados, se adjunta información de cirugía para gestión de materiales y logística.</option>
+        <option>Equipo, adjunto detalles de la cirugía (información general y logística) Verifiquen stock.</option>
+        <option>Estimados,Por favor, ver detalle del procedimiento quirúrgico para coordinación interna.</option>
+      </select>
+    </div>
+
+    <div class="form-group"><label>Paciente</label><input id="paciente" class="form-control" /></div>
+    <div class="form-group"><label>Médico</label><input id="medico" class="form-control" list="medicosList" /><datalist id="medicosList"></datalist></div>
+    <div class="form-group"><label>Instrumentador</label><input id="instrumentador" class="form-control" list="instrumentadoresList" /><datalist id="instrumentadoresList"></datalist></div>
+    <div class="form-group"><label>Lugar de Cirugía</label><input id="lugarCirugia" class="form-control" list="lugaresList" /><datalist id="lugaresList"></datalist></div>
+    <div class="form-group"><label>Fecha de Cirugía</label><input type="date" id="fechaCirugia" class="form-control" /></div>
+    <div class="form-group"><label>Tipo de Cirugía</label><input id="tipoCirugia" class="form-control" list="tiposCirugia" /><datalist id="tiposCirugia"></datalist></div>
+    <div class="form-group"><label>Material Requerido</label><textarea id="material" class="form-control"></textarea></div>
+    <div class="form-group"><label>Observaciones</label><textarea id="observaciones" class="form-control"></textarea></div>
+    <div class="form-group"><label>Información Adicional</label><textarea id="infoAdicional" class="form-control"></textarea></div>
+
+    <div class="text-center">
+      <button onclick="generarTexto()">Generar Texto</button>
+      <button onclick="copiarTexto()">Copiar y Guardar</button>
+      <button onclick="compartirWhatsApp()">Compartir WhatsApp</button>
+      <button onclick="compartirComoImagen()">Compartir Imagen</button>
+      <button onclick="enviarPorEmail()">Enviar Email</button>
+      <button onclick="imprimirReporte()">Imprimir</button>
+      <button onclick="toggleDarkMode()">🌙 Modo Oscuro</button>
+      <a href="admin.html" class="btn-link">Ver Reportes</a>
+    </div>
+
+    <div id="resultado-container" style="display:none;"></div>
+
+    <small class="credit">By Responsable de Sistemas Franco Pared – Districorr ®</small>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
