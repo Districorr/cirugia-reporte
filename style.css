@@ -65,3 +65,34 @@ button {
   color: #555;
   font-size: 0.9rem;
 }
+.reporte-box {
+  background-color: #f5faff;
+  border-left: 5px solid #007bff;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-family: 'Lato', sans-serif;
+  margin-top: 20px;
+}
+
+.reporte-box h3,
+.reporte-box h4 {
+  color: #003f63;
+  margin-top: 0;
+}
+
+.reporte-box ul {
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+.reporte-box li {
+  margin-bottom: 6px;
+}
+
+.reporte-box p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
