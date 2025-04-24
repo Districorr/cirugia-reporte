@@ -24,6 +24,20 @@
     const db = firebase.firestore();
   </script>
 </head>
+<script>
+fetch('tipos_cirugia.json')
+  .then(response => response.json())
+  .then(data => {
+    const datalist = document.getElementById('tiposCirugia');
+    datalist.innerHTML = '';
+    data.forEach(tipo => {
+      const option = document.createElement('option');
+      option.value = tipo;
+      datalist.appendChild(option);
+    });
+  })
+  .catch(err => console.error('Error cargando tipos de cirugía:', err));
+</script>
 <body>
   <div class="container">
     <header>
