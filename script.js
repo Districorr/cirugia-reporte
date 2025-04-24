@@ -173,7 +173,7 @@ function imprimirReporte() {
   win.focus();
   setTimeout(() => win.print(), 1000);
 }
-}
+
 
 function guardarEnFirebase(data) {
   document.body.classList.add('loading');
