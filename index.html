@@ -1,117 +1,267 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generador de Reportes de Cirugía Districorr</title>
-  <link rel="icon" href="https://i.imgur.com/aA7RzTN.png" />
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Lato&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Generador de Reportes | Districorr</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="spinner" id="spinner"></div>
+  <div class="container">
+    <header>
+      <img src="https://i.imgur.com/aA7RzTN.png" alt="Districorr Logo" class="logo-header">
+      <h2>Generador de Reportes de Cirugía</h2>
+    </header>
+
+    <form id="reporteForm">
+      <div class="form-group">
+        <label for="paciente">Paciente:</label>
+        <input type="text" id="paciente" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label for="medico">Médico:</label>
+        <input type="text" id="medico" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label for="fechaCirugia">Fecha de Cirugía:</label>
+        <input type="date" id="fechaCirugia" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label for="tipoCirugia">Tipo de Cirugía:</label>
+        <select id="tipoCirugia" class="form-control" required>
+          <option value="">Seleccione un tipo</option>
+          <!-- Las opciones se cargarán con JavaScript -->
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="material">Material Requerido:</label>
+        <textarea id="material" class="form-control" rows="4" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Formato del Reporte:</label>
+        <div>
+          <input type="radio" id="formal" name="formato" value="formal" checked>
+          <label for="formal">Formal</label>
+          
+          <input type="radio" id="moderno" name="formato" value="moderno">
+          <label for="moderno">Moderno</label>
+          
+          <input type="radio" id="casual" name="formato" value="casual">
+          <label for="casual">Casual</label>
+        </div>
+      </div>
+
+      <div class="form-group text-center">
+        <button type="button" id="generarBtn" class="btn-link">Generar Reporte</button>
+        <button type="button" id="guardarBtn" class="btn-link">Guardar Reporte</button>
+        <button type="button" id="limpiarBtn" class="btn-link">Limpiar Formulario</button>
+      </div>
+    </form>
+
+    <div id="reporteGenerado" class="reporte-box" style="display: none;">
+      <h3>Reporte Generado:</h3>
+      <div id="reporteTexto"></div>
+      <button id="copiarBtn" class="btn-link" style="margin-top: 15px;">Copiar al Portapapeles</button>
+    </div>
+
+    <div class="text-center" style="margin-top: 30px;">
+      <a href="admin.html" class="btn-link">Ver Reportes Guardados</a>
+      <a href="estadisticas.html" class="btn-link">Ver Estadísticas</a>
+    </div>
+
+    <span class="credit">© 2023 Districorr - Generador de Reportes de Cirugía</span>
+  </div>
+
   <script>
+    // Configuración de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
       authDomain: "cirugia-reporte.firebaseapp.com",
       projectId: "cirugia-reporte",
-      storageBucket: "cirugia-reporte.firebasestorage.app",
+      storageBucket: "cirugia-reporte.appspot.com",
       messagingSenderId: "698831567840",
       appId: "1:698831567840:web:fc6d6197f22beba4d88985",
       measurementId: "G-HD7ZLL1GLZ"
     };
+
+    // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-  </script>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <img src="https://i.imgur.com/aA7RzTN.png" class="logo-header" alt="Logo Districorr" />
-      <h4>Generador de Reportes de Cirugía Districorr</h4>
-    </header>
 
-    <div class="form-group">
-      <label for="formato">Formato de Texto</label>
-      <select id="formato" class="form-control">
-        <option value="formal">Formal</option>
-        <option value="moderno">Moderno</option>
-        <option value="casual">Detallado</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="mensajeInicio">Mensaje de Inicio</label>
-      <select id="mensajeInicio" class="form-control">
-        <option>Estimados, Adjunto detalles de la cirugía programada</option>
-        <option>Estimados, Informo las novedades de la cirugía ya programada</option>
-        <option>Estimados, se adjunta información de cirugía para gestión de materiales y logística.</option>
-        <option>Equipo, adjunto detalles de la cirugía (información general y logística) Verifiquen stock.</option>
-        <option>Estimados, Por favor, ver detalle del procedimiento quirúrgico para coordinación interna.</option>
-      </select>
-    </div>
-
-    <div class="form-group"><label for="paciente">Paciente</label><input id="paciente" class="form-control" /></div>
-    <div class="form-group"><label for="medico">Médico</label><input id="medico" class="form-control" list="medicosList" /><datalist id="medicosList"></datalist></div>
-    <div class="form-group"><label for="instrumentador">Instrumentador</label><input id="instrumentador" class="form-control" list="instrumentadoresList" /><datalist id="instrumentadoresList"></datalist></div>
-    <div class="form-group"><label for="lugarCirugia">Lugar de Cirugía</label><input id="lugarCirugia" class="form-control" list="lugaresList" /><datalist id="lugaresList"></datalist></div>
-    <div class="form-group"><label for="fechaCirugia">Fecha de Cirugía</label><input type="date" id="fechaCirugia" class="form-control" /></div>
-    <div class="form-group"><label for="tipoCirugia">Tipo de Cirugía</label><input id="tipoCirugia" class="form-control" list="tiposCirugia" /><datalist id="tiposCirugia"></datalist></div>
-    <div class="form-group"><label for="material">Material Requerido</label><textarea id="material" class="form-control"></textarea></div>
-    <div class="form-group"><label for="observaciones">Observaciones</label><textarea id="observaciones" class="form-control"></textarea></div>
-    <div class="form-group"><label for="infoAdicional">Información Adicional</label><textarea id="infoAdicional" class="form-control"></textarea></div>
-
-    <div class="text-center">
-      <button onclick="generarTexto()">Generar Texto</button>
-      <button onclick="copiarTexto()">Copiar y Guardar</button>
-      <button onclick="compartirWhatsApp()">Compartir WhatsApp</button>
-      <button onclick="compartirComoImagen()">Compartir Imagen</button>
-      <button onclick="enviarPorEmail()">Enviar Email</button>
-      <button onclick="imprimirReporte()">Imprimir</button>
-      <button onclick="toggleDarkMode()">🌙 Modo Oscuro</button>
-      <a href="admin.html" class="btn-link">Ver Reportes</a>
-    </div>
-
-    <div id="resultado-container" style="display:none;"></div>
-
-    <small class="credit">By Responsable de Sistemas Franco Pared – Districorr ®</small>
-  </div>
-
-  <!-- Script para ranking de tipos -->
-  <script>
-    fetch('tipos_cirugia.json')
-      .then(response => response.json())
-      .then(data => {
-        const datalist = document.getElementById('tiposCirugia');
-        const input = document.getElementById('tipoCirugia');
-        const key = 'ranking_tiposCirugia';
-
-        function actualizarDatalist() {
-          const ranking = JSON.parse(localStorage.getItem(key) || '{}');
-          const ordenados = [...data].sort((a, b) => (ranking[b] || 0) - (ranking[a] || 0));
-          datalist.innerHTML = '';
-          ordenados.forEach(tipo => {
+    // Cargar tipos de cirugía desde el JSON
+    document.addEventListener('DOMContentLoaded', function() {
+      const tipoCirugiaSelect = document.getElementById('tipoCirugia');
+      
+      fetch('tipos_cirugia.json')
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(tipo => {
             const option = document.createElement('option');
             option.value = tipo;
-            datalist.appendChild(option);
+            option.textContent = tipo;
+            tipoCirugiaSelect.appendChild(option);
           });
-        }
+        })
+        .catch(error => console.error('Error al cargar tipos de cirugía:', error));
 
-        input.addEventListener('change', () => {
-          const valor = input.value.trim();
-          if (!valor) return;
-          const ranking = JSON.parse(localStorage.getItem(key) || '{}');
-          ranking[valor] = (ranking[valor] || 0) + 1;
-          localStorage.setItem(key, JSON.stringify(ranking));
-          actualizarDatalist();
-        });
+      // Configurar eventos de los botones
+      document.getElementById('generarBtn').addEventListener('click', generarReporte);
+      document.getElementById('guardarBtn').addEventListener('click', guardarReporte);
+      document.getElementById('limpiarBtn').addEventListener('click', limpiarFormulario);
+      document.getElementById('copiarBtn').addEventListener('click', copiarReporte);
+    });
 
-        actualizarDatalist();
+    // Función para generar el reporte
+    function generarReporte() {
+      const paciente = document.getElementById('paciente').value;
+      const medico = document.getElementById('medico').value;
+      const fechaCirugia = document.getElementById('fechaCirugia').value;
+      const tipoCirugia = document.getElementById('tipoCirugia').value;
+      const material = document.getElementById('material').value;
+      const formato = document.querySelector('input[name="formato"]:checked').value;
+
+      if (!paciente || !medico || !fechaCirugia || !tipoCirugia || !material) {
+        alert('Por favor complete todos los campos obligatorios');
+        return;
+      }
+
+      const fechaFormateada = new Date(fechaCirugia).toLocaleDateString('es-AR');
+      
+      let reporteTexto = '';
+      
+      // Generar reporte según el formato seleccionado
+      switch(formato) {
+        case 'formal':
+          reporteTexto = `
+            <div class="formato-formal">
+              <p><strong>Estimados,</strong></p>
+              <p>Adjunto detalles de la cirugía programada:</p>
+              <ul>
+                <li><strong>Paciente:</strong> ${paciente}</li>
+                <li><strong>Médico:</strong> ${medico}</li>
+                <li><strong>Fecha de Cirugía:</strong> ${fechaFormateada}</li>
+                <li><strong>Tipo de Cirugía:</strong> ${tipoCirugia}</li>
+              </ul>
+              
+              <p><strong>Material Requerido:</strong></p>
+              <p>${material}</p>
+              
+              <p>Saludos cordiales,</p>
+              <p>Districorr</p>
+            </div>
+          `;
+          break;
+          
+        case 'moderno':
+          reporteTexto = `
+            <div class="formato-moderno">
+              <h4>Reporte de Cirugía - Districorr</h4>
+              <div style="margin: 15px 0;">
+                <p><strong>Paciente:</strong> ${paciente}</p>
+                <p><strong>Médico:</strong> ${medico}</p>
+                <p><strong>Fecha:</strong> ${fechaFormateada}</p>
+                <p><strong>Procedimiento:</strong> ${tipoCirugia}</p>
+              </div>
+              
+              <h5>Materiales solicitados:</h5>
+              <div style="background: #f5f5f5; padding: 10px; border-radius: 5px;">
+                ${material.split('\n').map(item => `<p>• ${item}</p>`).join('')}
+              </div>
+            </div>
+          `;
+          break;
+          
+        case 'casual':
+          reporteTexto = `
+            <div class="formato-casual">
+              <p>Hola equipo,</p>
+              <p>Les comparto los datos para la cirugía:</p>
+              
+              <div style="margin-left: 20px;">
+                <p>👉 <strong>Paciente:</strong> ${paciente}</p>
+                <p>👉 <strong>Dr./Dra.:</strong> ${medico}</p>
+                <p>👉 <strong>Día:</strong> ${fechaFormateada}</p>
+                <p>👉 <strong>Cirugía:</strong> ${tipoCirugia}</p>
+              </div>
+              
+              <p>Necesitamos este material:</p>
+              <div style="background: #e8f5e9; padding: 10px; border-radius: 5px;">
+                ${material.split('\n').map(item => `<p>✔ ${item}</p>`).join('')}
+              </div>
+              
+              <p>¡Gracias!</p>
+            </div>
+          `;
+          break;
+      }
+
+      // Mostrar el reporte generado
+      document.getElementById('reporteTexto').innerHTML = reporteTexto;
+      document.getElementById('reporteGenerado').style.display = 'block';
+    }
+
+    // Función para guardar el reporte en Firebase
+    function guardarReporte() {
+      const paciente = document.getElementById('paciente').value;
+      const medico = document.getElementById('medico').value;
+      const fechaCirugia = document.getElementById('fechaCirugia').value;
+      const tipoCirugia = document.getElementById('tipoCirugia').value;
+      const material = document.getElementById('material').value;
+      
+      if (!paciente || !medico || !fechaCirugia || !tipoCirugia || !material) {
+        alert('Por favor complete todos los campos obligatorios');
+        return;
+      }
+
+      // Mostrar spinner
+      document.getElementById('spinner').style.display = 'block';
+      
+      // Guardar en Firestore
+      db.collection("reportes").add({
+        paciente: paciente,
+        medico: medico,
+        fechaCirugia: fechaCirugia,
+        tipoCirugia: tipoCirugia,
+        material: material,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
       })
-      .catch(err => console.error('Error cargando tipos de cirugía:', err));
-  </script>
+      .then(() => {
+        alert('Reporte guardado exitosamente!');
+        document.getElementById('spinner').style.display = 'none';
+      })
+      .catch(error => {
+        console.error("Error al guardar:", error);
+        alert('Error al guardar el reporte');
+        document.getElementById('spinner').style.display = 'none';
+      });
+    }
 
-  <!-- Tu script personalizado con funciones -->
-  <script src="script.js"></script>
+    // Función para copiar el reporte al portapapeles
+    function copiarReporte() {
+      const reporteTexto = document.getElementById('reporteTexto');
+      const range = document.createRange();
+      range.selectNode(reporteTexto);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+      
+      alert('Reporte copiado al portapapeles!');
+    }
+
+    // Función para limpiar el formulario
+    function limpiarFormulario() {
+      document.getElementById('reporteForm').reset();
+      document.getElementById('reporteGenerado').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
