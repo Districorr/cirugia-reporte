@@ -254,29 +254,34 @@ function copiarTexto() {
 // Función para guardar en Firebase
 function guardarEnFirebase(data) {
   try {
-    if (!db) {
-      throw new Error('Base de datos no inicializada');
-    }
+    if (!data || !data.timestamp) throw new Error('Datos inválidos para guardar');
+    if (!db || typeof db.collection !== 'function') throw new Error('Firebase no está inicializado');
 
-    // Mostrar carga
     document.body.classList.add('loading');
-    
+
     db.collection("reportes").add(data)
       .then(() => {
-        console.log("Reporte guardado en Firebase");
+        console.log("✅ Reporte guardado en Firebase");
+        mostrarToast("✅ Reporte guardado correctamente");
       })
       .catch(error => {
-        console.error("Error al guardar:", error);
-        alert("Ocurrió un error al guardar el reporte");
+        console.error("❌ Error al guardar en Firestore:", error);
+        alert("Error al guardar: " + error.message);
       })
       .finally(() => {
         document.body.classList.remove('loading');
       });
   } catch (error) {
-    console.error('Error en guardarEnFirebase:', error);
+    console.error("⚠️ Error en guardarEnFirebase:", error);
+    alert("Error crítico: " + error.message);
     document.body.classList.remove('loading');
-    alert('Error al conectar con la base de datos');
   }
+}
+function mostrarToast(mensaje) {
+  const toast = document.getElementById('toast');
+  toast.textContent = mensaje;
+  toast.style.display = 'block';
+  setTimeout(() => toast.style.display = 'none', 3000);
 }
 
 // Otras funciones (compartirWhatsApp, generarImagen, etc.)...
