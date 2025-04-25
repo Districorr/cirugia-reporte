@@ -97,6 +97,7 @@ function obtenerDatos() {
     timestamp: new Date().toISOString()
   };
 }
+resultado.className = `reporte-box ${claseFormato}`;
 
 // Función principal para generar el texto
 function generarTexto() {
