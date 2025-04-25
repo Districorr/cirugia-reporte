@@ -175,6 +175,7 @@ function generarTexto() {
   } catch (error) {
     console.error('Error en generarTexto:', error);
     alert('Ocurrió un error al generar el reporte');
+    document.getElementById('texto-plano-output').textContent = resultado.innerText.trim();
   }
 }
 
