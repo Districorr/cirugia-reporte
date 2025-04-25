@@ -1,23 +1,15 @@
-<script>
-   const firebaseConfig = {
-     apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
-     authDomain: "cirugia-reporte.firebaseapp.com",
-     projectId: "cirugia-reporte",
-     storageBucket: "cirugia-reporte.appspot.com",
-     messagingSenderId: "698831567840",
-     appId: "1:698831567840:web:fc6d6197f22beba4d88985",
-     measurementId: "G-HD7ZLL1GLZ"
-   };
+const firebaseConfig = {
+   apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
+   authDomain: "cirugia-reporte.firebaseapp.com",
+   projectId: "cirugia-reporte",
+   storageBucket: "cirugia-reporte.appspot.com",
+   messagingSenderId: "698831567840",
+   appId: "1:698831567840:web:fc6d6197f22beba4d88985",
+   measurementId: "G-HD7ZLL1GLZ"
+ };
  
-   try {
-     firebase.initializeApp(firebaseConfig);
-     const db = firebase.firestore();
-     window.db = db; // <- para que esté disponible en script.js
-   } catch (e) {
-     console.error("Error inicializando Firebase:", e);
-     alert("Error al conectar con la base de datos");
-   }
- </script>
+ firebase.initializeApp(firebaseConfig);
+ const db = firebase.firestore();
  
  function aplicarFondoDinamico() {
    const body = document.body;
@@ -215,6 +207,11 @@
        console.error('Elemento resultado-container no encontrado');
        alert('Error al mostrar el resultado');
      }
+   } catch (error) {
+     console.error('Error en generarTexto:', error);
+     alert('Ocurrió un error al generar el reporte');
+     document.getElementById('texto-plano-output').textContent = resultado.innerText.trim();
+   }
    } .catch(error => {
    console.error("Error al guardar:", error);
    alert("❌ Ocurrió un error al guardar el reporte: " + error.message);
@@ -257,41 +254,26 @@
      if (!db) {
        throw new Error('Base de datos no inicializada');
      }
-     if (!data || !data.timestamp) throw new Error('Datos inválidos para guardar');
-     if (!db || typeof db.collection !== 'function') throw new Error('Firebase no está inicializado');
  
      // Mostrar carga
      document.body.classList.add('loading');
-     
  
      db.collection("reportes").add(data)
        .then(() => {
          console.log("Reporte guardado en Firebase");
-         console.log("✅ Reporte guardado en Firebase");
-         mostrarToast("✅ Reporte guardado correctamente");
        })
        .catch(error => {
          console.error("Error al guardar:", error);
          alert("Ocurrió un error al guardar el reporte");
-         console.error("❌ Error al guardar en Firestore:", error);
-         alert("Error al guardar: " + error.message);
        })
        .finally(() => {
          document.body.classList.remove('loading');
        });
    } catch (error) {
      console.error('Error en guardarEnFirebase:', error);
-     console.error("⚠️ Error en guardarEnFirebase:", error);
-     alert("Error crítico: " + error.message);
      document.body.classList.remove('loading');
      alert('Error al conectar con la base de datos');
    }
- }
- function mostrarToast(mensaje) {
-   const toast = document.getElementById('toast');
-   toast.textContent = mensaje;
-   toast.style.display = 'block';
-   setTimeout(() => toast.style.display = 'none', 3000);
  }
  
  // Otras funciones (compartirWhatsApp, generarImagen, etc.)...
