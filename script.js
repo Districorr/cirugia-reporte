@@ -35,6 +35,7 @@ function aplicarFondoDinamico() {
   if (contenedor) contenedor.insertBefore(banner, contenedor.firstChild);
 
 }
+console.log('Datos a guardar:', data);
 
 // Ejecutar cuando se carga el DOM
 window.addEventListener('DOMContentLoaded', aplicarFondoDinamico);
@@ -206,12 +207,18 @@ function generarTexto() {
       console.error('Elemento resultado-container no encontrado');
       alert('Error al mostrar el resultado');
     }
-  } catch (error) {
-    console.error('Error en generarTexto:', error);
-    alert('Ocurrió un error al generar el reporte');
-    document.getElementById('texto-plano-output').textContent = resultado.innerText.trim();
-  }
+  } .catch(error => {
+  console.error("Error al guardar:", error);
+  alert("❌ Ocurrió un error al guardar el reporte: " + error.message);
+})
 }
+.then(() => {
+  const toast = document.getElementById('toast');
+  toast.textContent = '✅ Reporte copiado y guardado correctamente';
+  toast.style.display = 'block';
+  setTimeout(() => toast.style.display = 'none', 3000);
+})
+
 
 // Función para copiar texto
 function copiarTexto() {
