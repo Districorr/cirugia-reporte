@@ -11,19 +11,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
-      authDomain: "cirugia-reporte.firebaseapp.com",
-      projectId: "cirugia-reporte",
-      storageBucket: "cirugia-reporte.firebasestorage.app",
-      messagingSenderId: "698831567840",
-      appId: "1:698831567840:web:fc6d6197f22beba4d88985",
-      measurementId: "G-HD7ZLL1GLZ"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-  </script>
 </head>
 <body>
   <div class="container">
@@ -49,34 +36,36 @@
         <option>Estimados, se adjunta información de cirugía para gestión de materiales y logística.</option>
         <option>Equipo, adjunto detalles de la cirugía (información general y logística) Verifiquen stock.</option>
         <option>Estimados,Por favor, ver detalle del procedimiento quirúrgico para coordinación interna.</option>
-         
       </select>
     </div>
 
     <div class="form-group"><label>Paciente</label><input id="paciente" class="form-control" /></div>
-<div class="form-group">
-  <label>Médico</label>
-  <input id="medico" class="form-control" list="medicosList" placeholder="Escriba o seleccione..." />
-  <datalist id="medicosList"></datalist>
-</div>
-<div class="form-group">
-  <label>Instrumentador</label>
-  <input id="instrumentador" class="form-control" list="instrumentadoresList" placeholder="Escriba o seleccione..." />
-  <datalist id="instrumentadoresList"></datalist>
-</div>
-<div class="form-group">
-  <label>Lugar de Cirugía</label>
-  <input id="lugarCirugia" class="form-control" list="lugaresList" placeholder="Escriba o seleccione..." />
-  <datalist id="lugaresList"></datalist>
-</div>
+    
+    <div class="form-group">
+      <label>Médico</label>
+      <input id="medico" class="form-control" list="medicosList" placeholder="Escriba o seleccione..." />
+      <datalist id="medicosList"></datalist>
+    </div>
+    
+    <div class="form-group">
+      <label>Instrumentador</label>
+      <input id="instrumentador" class="form-control" list="instrumentadoresList" placeholder="Escriba o seleccione..." />
+      <datalist id="instrumentadoresList"></datalist>
+    </div>
+    
+    <div class="form-group">
+      <label>Lugar de Cirugía</label>
+      <input id="lugarCirugia" class="form-control" list="lugaresList" placeholder="Escriba o seleccione..." />
+      <datalist id="lugaresList"></datalist>
+    </div>
+    
     <div class="form-group"><label>Fecha de Cirugía</label><input type="date" id="fechaCirugia" class="form-control" /></div>
 
-    <!-- CAMPO MEJORADO -->
+    <!-- Campo Tipo de Cirugía Completo -->
     <div class="form-group">
       <label>Tipo de Cirugía</label>
       <input id="tipoCirugia" class="form-control" list="tiposCirugia" placeholder="Escriba o seleccione..." />
       <datalist id="tiposCirugia">
-        <!-- Opciones generadas desde el archivo de clasificación -->
         <option>ARTROSCOPIA DE CADERA</option>
         <option>SISTEMA ALL INSIDE</option>
         <option>ARTROPLASTIA ANATOMICA DE HUMERO</option>
@@ -152,41 +141,52 @@
       </datalist>
     </div>
 
-    <div class="form-group"><label>Material Requerido</label><textarea id="material" class="form-control"></textarea></div>
-    <div class="form-group"><label>Observaciones</label><textarea id="observaciones" class="form-control"></textarea></div>
-    <div class="form-group"><label>Información Adicional</label><textarea id="infoAdicional" class="form-control"></textarea></div>
+    <div class="form-group"><label>Material Requerido</label><textarea id="material" class="form-control" rows="3"></textarea></div>
+    <div class="form-group"><label>Observaciones</label><textarea id="observaciones" class="form-control" rows="3"></textarea></div>
+    <div class="form-group"><label>Información Adicional</label><textarea id="infoAdicional" class="form-control" rows="3"></textarea></div>
 
-<div class="text-center">
-  <button onclick="generarTexto()">📝 Generar Texto</button>
-  <button onclick="copiarTexto()">📋 Copiar y Guardar</button>
-  <button onclick="compartirWhatsApp()">📲 Enviar WhatsApp</button>
-  <button onclick="enviarPorEmail()">✉️ Enviar Email</button>
-  <button onclick="descargarPDF()">🖨️ Imprimir / PDF</button>
-  <button onclick="generarImagen()">🖼️ Guardar como Imagen</button>
-  <a href="admin.html" class="btn-link">📁 Ver Reportes</a>
-  <button onclick="verEstadisticas()">📊 Ver Estadísticas</button>
-</div>
+    <div class="text-center">
+      <button onclick="generarTexto()">📝 Generar Texto</button>
+      <button onclick="copiarTexto()">📋 Copiar y Guardar</button>
+      <button onclick="compartirWhatsApp()">📲 Enviar WhatsApp</button>
+      <button onclick="enviarPorEmail()">✉️ Enviar Email</button>
+      <button onclick="imprimirReporte()">🖨️ Imprimir / PDF</button>
+      <button onclick="generarImagen()">🖼️ Guardar como Imagen</button>
+      <a href="admin.html" class="btn-link">📁 Ver Reportes</a>
+      <button onclick="verEstadisticas()">📊 Ver Estadísticas</button>
+    </div>
 
+    <div id="resultado-container" style="display: none;"></div>
 
-  <div id="resultado-container" style="display: none;"></div>
-
-  <div style="
-    background-color: #f9f9f9;
-    border-left: 5px solid #007bff;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  ">
-    <h4 style="margin-top: 0; color: #003f63;">📝 Resultado del Reporte</h4>
-    <pre id="texto-plano-output" style="white-space: pre-wrap; font-family: 'Courier New', monospace;"></pre>
-  </div>
-</div>
-
+    <div class="texto-plano-container">
+      <h4>📝 Resultado del Reporte</h4>
+      <pre id="texto-plano-output" style="white-space: pre-wrap; font-family: 'Courier New', monospace;"></pre>
+    </div>
 
     <small class="credit">By Responsable de Sistemas Franco Pared – Districorr ®</small>
   </div>
-  
- <script src="script.js"></script>
+
+  <script src="script.js"></script>
+  <script>
+    // Inicialización de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
+      authDomain: "cirugia-reporte.firebaseapp.com",
+      projectId: "cirugia-reporte",
+      storageBucket: "cirugia-reporte.appspot.com",
+      messagingSenderId: "698831567840",
+      appId: "1:698831567840:web:fc6d6197f22beba4d88985",
+      measurementId: "G-HD7ZLL1GLZ"
+    };
+    
+    try {
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      window.db = db; // Hacer disponible globalmente
+    } catch (e) {
+      console.error("Error inicializando Firebase:", e);
+      alert("Error al conectar con la base de datos");
+    }
+  </script>
 </body>
 </html>
