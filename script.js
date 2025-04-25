@@ -98,7 +98,7 @@ function generarTexto() {
             <p>${d.material || 'No especificado'}</p>
             <h4>OBSERVACIONES</h4>
             <p>${d.observaciones || 'Ninguna'}</p>
-            <p class="firma">Gracias por su atención.<br><strong>Coordinación Districorr</strong></p>
+            <p class="firma">Atentamente, quedo a la espera de sus comentarios o preguntas<br><strong>Coordinación Districorr</strong></p>
           </div>`;
         break;
 
@@ -119,7 +119,7 @@ function generarTexto() {
               <p>📌 <strong>Material requerido:</strong><br>${d.material || 'No especificado'}</p>
               <p>📝 <strong>Notas:</strong><br>${d.observaciones || 'Ninguna'}</p>
             </div>
-            <p class="firma">Saludos cordiales,<br>Equipo Districorr</p>
+            <p class="firma">Agradeciendo de antemano su tiempo y consideración, me mantengo a su disposición<br>Coordinacion Districorr</p>
           </div>`;
         break;
 
