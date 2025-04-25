@@ -12,17 +12,16 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
+<div id="minimapa" style="position:fixed;top:40%;left:10px;background:#007bff;color:#fff;padding:10px;border-radius:8px;">
+  <div style="font-weight:bold;">Ir a:</div>
+  <a href="#paciente" style="color:#fff;text-decoration:none;display:block;margin:5px 0;">Paciente</a>
+  <a href="#medico" style="color:#fff;text-decoration:none;display:block;margin:5px 0;">Médico</a>
+  <a href="#tipoCirugia" style="color:#fff;text-decoration:none;display:block;margin:5px 0;">Tipo</a>
+  <a href="#material" style="color:#fff;text-decoration:none;display:block;margin:5px 0;">Material</a>
+  <a href="#observaciones" style="color:#fff;text-decoration:none;display:block;margin:5px 0;">Obs.</a>
+</div>
 
 <body>
-  <div id="minimapa" style="position:fixed;top:40%;left:10px;background:#007bff;color:#fff;padding:10px;border-radius:8px;z-index:999;">
-    <div style="font-weight:bold;">Ir a:</div>
-    <a href="#paciente" style="color:#fff;text-decoration:none;display:block;margin:5px 0;">Paciente</a>
-    <a href="#medico" style="color:#fff;text-decoration:none;display:block;margin:5px 0;">Médico</a>
-    <a href="#tipoCirugia" style="color:#fff;text-decoration:none;display:block;margin:5px 0;">Tipo</a>
-    <a href="#material" style="color:#fff;text-decoration:none;display:block;margin:5px 0;">Material</a>
-    <a href="#observaciones" style="color:#fff;text-decoration:none;display:block;margin:5px 0;">Obs.</a>
-  </div>
-
   <div class="container">
     <header>
       <img src="https://i.imgur.com/aA7RzTN.png" class="logo-header" alt="Logo Districorr" style="max-height: 90px; display: block; margin: 0 auto;" />
@@ -71,11 +70,83 @@
     
     <div class="form-group"><label>Fecha de Cirugía</label><input type="date" id="fechaCirugia" class="form-control" /></div>
 
+    <!-- Campo Tipo de Cirugía Completo -->
     <div class="form-group">
       <label>Tipo de Cirugía</label>
       <input id="tipoCirugia" class="form-control" list="tiposCirugia" placeholder="Escriba o seleccione..." />
       <datalist id="tiposCirugia">
-        <!-- Opciones omitidas por brevedad, se mantienen igual -->
+        <option>ARTROSCOPIA DE CADERA</option>
+        <option>SISTEMA ALL INSIDE</option>
+        <option>ARTROPLASTIA ANATOMICA DE HUMERO</option>
+        <option>ARTROPLASTIA CUPULA RADIAL</option>
+        <option>ARTROPLASTIA REVERSA</option>
+        <option>ARTRODESIS CERVICAL/ DORSAL/ LUMBAR HASTA 3 NIVELES</option>
+        <option>ARTROSCOPIA DE HOMBRO ACROMIOCLAVICULAR</option>
+        <option>ARTROSCOPIA DE HOMBRO - COMPLEJA - PEEK</option>
+        <option>ARTROSCOPIA DE MANO - CODO - TOBILLO</option>
+        <option>ARTROSCOPIA RODILLA COMPLEJA</option>
+        <option>ARTRO RODILLA SIMPLE</option>
+        <option>ARTROPLASTIA HUMERO PARCIAL</option>
+        <option>ASISTENCIA POR DRILL CON FRESAS,BURS O SHAVER, CRANEO</option>
+        <option>CAGE PEEK</option>
+        <option>CLAVO DHS</option>
+        <option>CLAVO EXPERT F-T</option>
+        <option>CLAVO GAMMA</option>
+        <option>CLAVO NANCY</option>
+        <option>CLAVO CON ATB</option>
+        <option>CLAVIJA</option>
+        <option>CLAVO F/T/H EN ACERO</option>
+        <option>CLAVO F/T/H TITANIO</option>
+        <option>CLAVO FEMUR/TIBIA CON ATB</option>
+        <option>COLOCACION MECHES</option>
+        <option>COLUMNA POR NIVELES</option>
+        <option>CRANEOPLASTIA MAS DE 4 HORAS</option>
+        <option>CRANEOPLASTIA POR HORA UNA VEZ SUSPERADAS 8 HORAS DE CX</option>
+        <option>CRANEOPLASTIA HASTA 4 HORAS</option>
+        <option>CRANEOPLATIA</option>
+        <option>CUPULA RADIAL</option>
+        <option>DESCARTABLE</option>
+        <option>ENDOPROTESIS</option>
+        <option>EQUIPO</option>
+        <option>ESCOLIOSIS POR NIVEL</option>
+        <option>EXTRACION CLAVOS</option>
+        <option>EXTRACION PLACAS</option>
+        <option>EXTRACCION MATERIAL</option>
+        <option>HOMBRO - ACROMICLAVICULAR</option>
+        <option>HOMBRO PEEK</option>
+        <option>INTERESPINOSO O CAGE POR IMPLANTE</option>
+        <option>JPX</option>
+        <option>LESIÓN DE LIGAMENTO CRUZADO ANTERIOR</option>
+        <option>LIGAMENTO CRUZADO COMPLEJO</option>
+        <option>LOGISTICA</option>
+        <option>MANO ARPON</option>
+        <option>MAXILOFACIAL COMPLEJA</option>
+        <option>MAXILOFACIAL POR HORA UNA VEZ SUPERADA 8 HORAS DE CX</option>
+        <option>MAXILOFACIAL SIMPLE</option>
+        <option>MICROFRAGMENTO</option>
+        <option>ORTOPEDIA</option>
+        <option>OSTESINSTESIS 3,5 TITANIO</option>
+        <option>OSTEOSINTESIS 4,5 ACERO</option>
+        <option>OSTEOSINTESIS 4,5 EN TITANIO</option>
+        <option>OSTESINSTESIS 3,5 ACERO</option>
+        <option>PLACA CERVICAL</option>
+        <option>PUNTA SHAVER</option>
+        <option>RODILLA</option>
+        <option>REV RTC REVISION</option>
+        <option>RTC NO CEMENTADA</option>
+        <option>REEMPAZO TOTAL DE CADERA BIPOLAR</option>
+        <option>RTC CEMENTADA - ESPACIADOR</option>
+        <option>RTC HIBRIDA - REVISION</option>
+        <option>REEMPLAZO TOTAL RODILLA ANATOMICA</option>
+        <option>RTR REVISION</option>
+        <option>RTR PRIMARIA C/ VASTAGO TIBIAL</option>
+        <option>SIN CONSUMO O SUSPENDIDA SE COBRARA EL 50% SEGUN COMPL</option>
+        <option>SUTURA</option>
+        <option>SUTURA COMPLEJA</option>
+        <option>THOMPSON</option>
+        <option>TORNILLOS CANULADOS/HERBERT</option>
+        <option>TUTOR</option>
+        <option>XLIF, ALIF, OLIF SISTEMAS MINIVASICO/LAMPAROSCOPIA DE COLMN</option>
       </datalist>
     </div>
 
@@ -83,7 +154,7 @@
     <div class="form-group"><label>Observaciones</label><textarea id="observaciones" class="form-control" rows="3"></textarea></div>
     <div class="form-group"><label>Información Adicional</label><textarea id="infoAdicional" class="form-control" rows="3"></textarea></div>
 
-    <div class="text-center">
+     <div class="text-center">
       <button onclick="generarTexto()">📝 Generar Texto</button>
       <button onclick="copiarTexto()">📋 Copiar y Guardar</button>
       <button onclick="compartirWhatsApp()">📲 Enviar WhatsApp</button>
@@ -99,9 +170,9 @@
     <small class="credit">By Responsable de Sistemas Franco Pared – Districorr ®</small>
   </div>
 
-  <div id="toast" style="display:none;position:fixed;bottom:20px;right:20px;background:#28a745;color:#fff;padding:10px 20px;border-radius:8px;box-shadow:0 0 10px #0005;">✅ Reporte generado correctamente</div>
-
+  <script src="script.js"></script>
   <script>
+    // Inicialización de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
       authDomain: "cirugia-reporte.firebaseapp.com",
@@ -111,13 +182,16 @@
       appId: "1:698831567840:web:fc6d6197f22beba4d88985",
       measurementId: "G-HD7ZLL1GLZ"
     };
-
-    if (!firebase.apps.length) {
+    
+    try {
       firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      window.db = db; // Hacer disponible globalmente
+    } catch (e) {
+      console.error("Error inicializando Firebase:", e);
+      alert("Error al conectar con la base de datos");
     }
-    window.db = firebase.firestore();
   </script>
-  <script src="script.js"></script>
+<div id="toast" style="display:none;position:fixed;bottom:20px;right:20px;background:#28a745;color:#fff;padding:10px 20px;border-radius:8px;box-shadow:0 0 10px #0005;">✅ Reporte generado correctamente</div>
 </body>
 </html>
-
