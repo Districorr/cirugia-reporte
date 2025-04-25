@@ -9,23 +9,14 @@ const firebaseConfig = {
   measurementId: "G-HD7ZLL1GLZ"
 };
 
-// Inicialización de Firebase
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Función para manejar sugerencias
 function actualizarSugerencias(idInput, idList) {
   const input = document.getElementById(idInput);
   const list = document.getElementById(idList);
   const key = `sugerencias_${idInput}`;
-  const valores = JSON.parse(localStorage.getItem(key) || [];
-
-  if (!input || !list) {
-    console.error(`Elementos no encontrados para ${idInput}`);
-    return;
-  }
+  const valores = JSON.parse(localStorage.getItem(key) || "[]");
 
   input.addEventListener('change', () => {
     const nuevo = input.value.trim();
@@ -37,7 +28,6 @@ function actualizarSugerencias(idInput, idList) {
   });
 
   function actualizarLista() {
-    if (!list) return;
     list.innerHTML = '';
     valores.forEach(v => {
       const opt = document.createElement('option');
