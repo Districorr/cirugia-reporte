@@ -9,7 +9,15 @@ const firebaseConfig = {
   measurementId: "G-HD7ZLL1GLZ"
 };
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp({
+  apiKey: "...",
+  authDomain: "...",
+  projectId: "...",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "...",
+  measurementId: "..."
+});
 const db = firebase.firestore();
 
 function actualizarSugerencias(idInput, idList) {
@@ -38,6 +46,7 @@ function actualizarSugerencias(idInput, idList) {
 
   actualizarLista();
 }
+
 
 // Función para obtener datos del formulario
 function obtenerDatos() {
@@ -74,7 +83,7 @@ function generarTexto() {
         claseFormato = 'formato-formal';
         texto = `
           <div class="reporte-contenido">
-            <img src="https://i.imgur.com/aA7RzTN.png" alt="Logo Districorr" class="logo-reporte">
+            <img src="https://i.imgur.com/aA7RzTN.png" alt="Logo Districorr" style="max-height: 70px; margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto;">
             <h3>🗓️ REPORTE DE CIRUGÍA PROGRAMADA</h3>
             <p>${d.mensajeInicio}</p>
             <ul>
@@ -97,7 +106,7 @@ function generarTexto() {
         claseFormato = 'formato-moderno';
         texto = `
           <div class="reporte-contenido">
-            <img src="https://i.imgur.com/aA7RzTN.png" alt="Logo Districorr" class="logo-reporte">
+           <img src="https://i.imgur.com/aA7RzTN.png" alt="Logo Districorr" style="max-height: 70px; margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto;">
             <h3>📅 Cirugía Programada</h3>
             <p>${d.mensajeInicio}</p>
             <div class="grid-datos">
@@ -118,7 +127,7 @@ function generarTexto() {
         claseFormato = 'formato-detallado';
         texto = `
           <div class="reporte-contenido">
-            <img src="https://i.imgur.com/aA7RzTN.png" alt="Logo Districorr" class="logo-reporte">
+            <img src="https://i.imgur.com/aA7RzTN.png" alt="Logo Districorr" style="max-height: 70px; margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto;">
             <h3>📝 INFORME DETALLADO DE CIRUGÍA</h3>
             <p>${d.mensajeInicio}</p>
             
