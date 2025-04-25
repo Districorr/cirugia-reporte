@@ -98,6 +98,13 @@ function obtenerDatos() {
   };
 }
 resultado.className = `reporte-box ${claseFormato}`;
+let claseTema = 'tema-default';
+if (tipo.includes('artroscopia')) claseTema = 'tema-artroscopia';
+else if (tipo.includes('maxilofacial')) claseTema = 'tema-maxilofacial';
+else if (tipo.includes('hombro')) claseTema = 'tema-hombro';
+else if (tipo.includes('columna')) claseTema = 'tema-columna';
+
+resultado.className = `reporte-box ${claseFormato} ${claseTema}`;
 
 // Función principal para generar el texto
 function generarTexto() {
