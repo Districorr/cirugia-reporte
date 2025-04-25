@@ -1,3 +1,18 @@
+function obtenerDatos() {
+  return {
+    formato: document.getElementById('formato').value,
+    mensajeInicio: document.getElementById('mensajeInicio').value,
+    paciente: document.getElementById('paciente').value.trim(),
+    medico: document.getElementById('medico').value.trim(),
+    instrumentador: document.getElementById('instrumentador').value.trim(),
+    lugarCirugia: document.getElementById('lugarCirugia').value.trim(),
+    fechaCirugia: document.getElementById('fechaCirugia').value,
+    tipoCirugia: document.getElementById('tipoCirugia').value.trim(),
+    material: document.getElementById('material').value.trim(),
+    observaciones: document.getElementById('observaciones').value.trim(),
+    infoAdicional: document.getElementById('infoAdicional').value.trim(),
+  };
+}
 function generarTexto() {
   try {
     const d = obtenerDatos();
