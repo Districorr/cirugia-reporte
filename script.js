@@ -20,6 +20,38 @@ firebase.initializeApp({
 });
 const db = firebase.firestore();
 
+function aplicarFondoDinamico() {
+  const body = document.body;
+  const dia = new Date().getDay(); // 0 = domingo, 1 = lunes, ..., 6 = sábado
+
+  const fondos = {
+    0: "url('https://i.imgur.com/NpN6EUX.jpg')", // Domingo
+    1: "url('https://i.imgur.com/G3MNwFh.jpg')", // Lunes
+    2: "url('https://i.imgur.com/OQshpOc.jpg')", // Martes
+    3: "url('https://i.imgur.com/NyRE4j5.jpg')", // Miércoles
+    4: "url('https://i.imgur.com/lNwKj4w.jpg')", // Jueves
+    5: "url('https://i.imgur.com/SH3rGpZ.jpg')", // Viernes
+    6: "url('https://i.imgur.com/utwNj3P.jpg')", // Sábado
+  };
+
+  body.style.backgroundImage = fondos[dia];
+  body.style.backgroundSize = 'cover';
+  body.style.backgroundRepeat = 'no-repeat';
+  body.style.backgroundAttachment = 'fixed';
+const mensajes = ['¡Feliz domingo!', '¡Buen lunes!', '¡Buen martes!', '¡Miércoles productivo!', '¡Jueves activo!', '¡Viernes con energía!', '¡Sábado de cirugías!'];
+
+const contenedor = document.querySelector('.container');
+const banner = document.createElement('div');
+banner.textContent = mensajes[dia];
+banner.style = 'text-align:center; padding:10px; background:#ffffffcc; font-weight:bold; font-size:18px; margin-bottom:15px; border-radius:8px;';
+contenedor.insertBefore(banner, contenedor.firstChild);
+
+}
+
+// Ejecutar cuando se carga el DOM
+window.addEventListener('DOMContentLoaded', aplicarFondoDinamico);
+
+
 function actualizarSugerencias(idInput, idList) {
   const input = document.getElementById(idInput);
   const list = document.getElementById(idList);
