@@ -195,6 +195,12 @@ function generarTexto() {
             
             <p class="firma">Atentamente,<br><strong>Districorr</strong></p>
           </div>`;
+         const toast = document.getElementById('toast');
+         toast.style.display = 'block';
+        setTimeout(() => {
+        toast.style.display = 'none';
+        }, 3000);
+
     }
 
     const resultado = document.getElementById('resultado-container');
