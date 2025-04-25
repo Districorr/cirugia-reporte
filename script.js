@@ -1,15 +1,23 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
-  authDomain: "cirugia-reporte.firebaseapp.com",
-  projectId: "cirugia-reporte",
-  storageBucket: "cirugia-reporte.appspot.com",
-  messagingSenderId: "698831567840",
-  appId: "1:698831567840:web:fc6d6197f22beba4d88985",
-  measurementId: "G-HD7ZLL1GLZ"
-};
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
+    authDomain: "cirugia-reporte.firebaseapp.com",
+    projectId: "cirugia-reporte",
+    storageBucket: "cirugia-reporte.appspot.com",
+    messagingSenderId: "698831567840",
+    appId: "1:698831567840:web:fc6d6197f22beba4d88985",
+    measurementId: "G-HD7ZLL1GLZ"
+  };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+  try {
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    window.db = db; // <- para que esté disponible en script.js
+  } catch (e) {
+    console.error("Error inicializando Firebase:", e);
+    alert("Error al conectar con la base de datos");
+  }
+</script>
 
 function aplicarFondoDinamico() {
   const body = document.body;
