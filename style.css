@@ -38,6 +38,12 @@ button:hover, .btn-volver:hover {
   margin-bottom: 20px;
 }
 
+.tema-artroscopia { border-left-color: #17a2b8; background-color: #e9f7fc; }
+.tema-maxilofacial { border-left-color: #a0418a; background-color: #fbe9ff; }
+.tema-hombro { border-left-color: #007bff; background-color: #e8f0ff; }
+.tema-columna { border-left-color: #28a745; background-color: #eafaf1; }
+.tema-default { border-left-color: #999; background-color: #f5f5f5; }
+
 .form-control {
   width: 100%;
   padding: 10px;
