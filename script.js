@@ -1,4 +1,5 @@
-const firebaseConfig = {
+// Configuración de Firebase
+ const firebaseConfig = {
    apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
    authDomain: "cirugia-reporte.firebaseapp.com",
    projectId: "cirugia-reporte",
@@ -8,7 +9,15 @@ const firebaseConfig = {
    measurementId: "G-HD7ZLL1GLZ"
  };
  
- firebase.initializeApp(firebaseConfig);
+ firebase.initializeApp({
+   apiKey: "...",
+   authDomain: "...",
+   projectId: "...",
+   storageBucket: "...",
+   messagingSenderId: "...",
+   appId: "...",
+   measurementId: "..."
+ });
  const db = firebase.firestore();
  
  function aplicarFondoDinamico() {
@@ -26,16 +35,18 @@ const firebaseConfig = {
    };
  
    body.style.backgroundImage = fondos[dia];
-   body.classList.add('fondo-dinamico');
+   body.style.backgroundSize = 'cover';
+   body.style.backgroundRepeat = 'no-repeat';
+   body.style.backgroundAttachment = 'fixed';
+ const mensajes = ['¡Feliz domingo!', '¡Buen lunes!', '¡Buen martes!', '¡Miércoles productivo!', '¡Jueves activo!', '¡Viernes con energía!', '¡Sábado de cirugías!'];
  
-   const contenedor = document.querySelector('.container');
-   const banner = document.createElement('div');
-   banner.textContent = mensajes[dia];
-   banner.style = 'text-align:center; padding:10px; background:#ffffffcc; font-weight:bold; font-size:18px; margin-bottom:15px; border-radius:8px;';
-   if (contenedor) contenedor.insertBefore(banner, contenedor.firstChild);
+ const contenedor = document.querySelector('.container');
+ const banner = document.createElement('div');
+ banner.textContent = mensajes[dia];
+ banner.style = 'text-align:center; padding:10px; background:#ffffffcc; font-weight:bold; font-size:18px; margin-bottom:15px; border-radius:8px;';
+ contenedor.insertBefore(banner, contenedor.firstChild);
  
  }
- console.log('Datos a guardar:', data);
  
  // Ejecutar cuando se carga el DOM
  window.addEventListener('DOMContentLoaded', aplicarFondoDinamico);
@@ -212,18 +223,7 @@ const firebaseConfig = {
      alert('Ocurrió un error al generar el reporte');
      document.getElementById('texto-plano-output').textContent = resultado.innerText.trim();
    }
-   } .catch(error => {
-   console.error("Error al guardar:", error);
-   alert("❌ Ocurrió un error al guardar el reporte: " + error.message);
- })
  }
- .then(() => {
-   const toast = document.getElementById('toast');
-   toast.textContent = '✅ Reporte copiado y guardado correctamente';
-   toast.style.display = 'block';
-   setTimeout(() => toast.style.display = 'none', 3000);
- })
- 
  
  // Función para copiar texto
  function copiarTexto() {
