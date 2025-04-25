@@ -1,4 +1,3 @@
-// Configuración de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCFtuuSPCcQIkgDN_F1WRS4U-71pRNCf_E",
   authDomain: "cirugia-reporte.firebaseapp.com",
@@ -9,15 +8,7 @@ const firebaseConfig = {
   measurementId: "G-HD7ZLL1GLZ"
 };
 
-firebase.initializeApp({
-  apiKey: "...",
-  authDomain: "...",
-  projectId: "...",
-  storageBucket: "...",
-  messagingSenderId: "...",
-  appId: "...",
-  measurementId: "..."
-});
+firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 function aplicarFondoDinamico() {
@@ -35,16 +26,13 @@ function aplicarFondoDinamico() {
   };
 
   body.style.backgroundImage = fondos[dia];
-  body.style.backgroundSize = 'cover';
-  body.style.backgroundRepeat = 'no-repeat';
-  body.style.backgroundAttachment = 'fixed';
-const mensajes = ['¡Feliz domingo!', '¡Buen lunes!', '¡Buen martes!', '¡Miércoles productivo!', '¡Jueves activo!', '¡Viernes con energía!', '¡Sábado de cirugías!'];
+  body.classList.add('fondo-dinamico');
 
-const contenedor = document.querySelector('.container');
-const banner = document.createElement('div');
-banner.textContent = mensajes[dia];
-banner.style = 'text-align:center; padding:10px; background:#ffffffcc; font-weight:bold; font-size:18px; margin-bottom:15px; border-radius:8px;';
-contenedor.insertBefore(banner, contenedor.firstChild);
+  const contenedor = document.querySelector('.container');
+  const banner = document.createElement('div');
+  banner.textContent = mensajes[dia];
+  banner.style = 'text-align:center; padding:10px; background:#ffffffcc; font-weight:bold; font-size:18px; margin-bottom:15px; border-radius:8px;';
+  if (contenedor) contenedor.insertBefore(banner, contenedor.firstChild);
 
 }
 
