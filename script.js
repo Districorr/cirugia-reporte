@@ -25,13 +25,13 @@ function aplicarFondoDinamico() {
   const dia = new Date().getDay(); // 0 = domingo, 1 = lunes, ..., 6 = sábado
 
   const fondos = {
-    0: "url('https://i.imgur.com/NpN6EUX.jpg')", // Domingo
-    1: "url('https://i.imgur.com/G3MNwFh.jpg')", // Lunes
-    2: "url('https://i.imgur.com/OQshpOc.jpg')", // Martes
-    3: "url('https://i.imgur.com/NyRE4j5.jpg')", // Miércoles
-    4: "url('https://i.imgur.com/lNwKj4w.jpg')", // Jueves
-    5: "url('https://i.imgur.com/SH3rGpZ.jpg')", // Viernes
-    6: "url('https://i.imgur.com/utwNj3P.jpg')", // Sábado
+    0: "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80')", // Domingo
+    1: "url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80')", // Lunes
+    2: "url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1920&q=80')", // Martes
+    3: "url('https://images.unsplash.com/photo-1532634896-26909d0dff68?auto=format&fit=crop&w=1920&q=80')", // Miércoles
+    4: "url('https://images.unsplash.com/photo-1484981138541-3d074aa97716?auto=format&fit=crop&w=1920&q=80')", // Jueves
+    5: "url('https://images.unsplash.com/photo-1501426026826-31c667bdf23d?auto=format&fit=crop&w=1920&q=80')", // Viernes
+    6: "url('ttps://images.unsplash.com/photo-1505483531331-375a0b2ebc89?auto=format&fit=crop&w=1920&q=80')", // Sábado
   };
 
   body.style.backgroundImage = fondos[dia];
