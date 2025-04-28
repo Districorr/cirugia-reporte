@@ -107,4 +107,17 @@ button:hover, .btn-volver:hover {
   background-position: center;
   background-size: 100px;
 }
+/* Estilo especial para el material (respeta saltos y espacios) */
+.reporte-contenido pre {
+  background: #f0f8ff;
+  padding: 12px;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
 
