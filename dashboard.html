@@ -8,33 +8,76 @@
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Lato&display=swap" rel="stylesheet">
   <style>
-    body { background-color: #f0f2f5; }
+    /* Estilo base para la página del dashboard */
+    body { 
+      background-color: #f0f2f5; 
+      font-family: 'Lato', sans-serif;
+    }
   </style>
 </head>
 <body class="admin-page">
-  <div class="container" style="max-width: 95%; margin: 20px auto;">
+  <div class="container" style="max-width: 98%; margin: 20px auto;">
     <header style="margin-bottom: 25px; text-align: center;">
       <img src="https://i.imgur.com/aA7RzTN.png" alt="Logo Districorr" style="max-height: 70px; margin-bottom: 10px;" />
-      <h2 style="color: #333; font-family: 'Poppins', sans-serif;">📦 Dashboard de Preparación de Cirugías</h2>
+      <h2 style="color: #333; font-family: 'Poppins', sans-serif;">📦 Centro de Comando de Preparación</h2>
     </header>
 
-    <!-- Este es el contenedor donde nuestro componente vivirá -->
-    <main id="dashboard-grid-container" class="dashboard-grid"></main>
+    <!-- Contenedor principal con las 4 columnas de estado. El componente llenará estas columnas. -->
+    <main class="dashboard-columns-container">
+      
+      <!-- Columna PENDIENTES -->
+      <div class="status-column">
+        <h3 class="column-title" style="background-color: #6c757d;">⚪️ Pendientes</h3>
+        <div id="col-pendientes" class="card-container">
+          <!-- El componente insertará aquí las tarjetas con estado 'pendiente' -->
+        </div>
+      </div>
+
+      <!-- Columna EN PROCESO -->
+      <div class="status-column">
+        <h3 class="column-title" style="background-color: #ffc107; color: #333;">🟡 En Proceso</h3>
+        <div id="col-en-proceso" class="card-container">
+           <!-- El componente insertará aquí las tarjetas con estado 'en-proceso' -->
+        </div>
+      </div>
+      
+      <!-- Columna EN TRÁNSITO -->
+      <div class="status-column">
+        <h3 class="column-title" style="background-color: #dc3545;">🔴 En Tránsito</h3>
+        <div id="col-en-transito" class="card-container">
+            <!-- El componente insertará aquí las tarjetas con estado 'en-transito' -->
+        </div>
+      </div>
+
+      <!-- Columna COMPLETADOS -->
+      <div class="status-column">
+        <h3 class="column-title" style="background-color: #28a745;">🟢 Completados</h3>
+        <div id="col-completados" class="card-container">
+          <!-- El componente insertará aquí las tarjetas con estado 'completado' -->
+        </div>
+      </div>
+
+    </main>
   </div>
 
-  <!-- Scripts de Firebase (esenciales) -->
+  <!-- Scripts de Firebase, necesarios para la conexión -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   
-  <!-- **Cargamos nuestro componente** -->
+  <!-- Script de nuestro componente, que contiene toda la lógica -->
   <script src="DashboardCirugias.js"></script>
 
-  <!-- **Y finalmente, lo activamos** -->
+  <!-- Script final para iniciar el componente cuando la página se carga -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Creamos una "instancia" de nuestro componente y la guardamos
-      // en una variable global para que los botones 'onclick' puedan acceder a ella.
-      window.dashboardComponent = new DashboardCirugias('#dashboard-grid-container');
+      // Creamos una nueva instancia del componente y le decimos dónde debe dibujar cada columna.
+      // Guardamos la instancia en 'window' para que los botones de las tarjetas puedan acceder a sus funciones.
+      window.dashboardComponent = new DashboardCirugias({
+        pendientes: '#col-pendientes',
+        'en-proceso': '#col-en-proceso',
+        'en-transito': '#col-en-transito',
+        completado: '#col-completados'
+      });
     });
   </script>
 </body>
