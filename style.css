@@ -858,47 +858,109 @@ body.admin-page tbody tr.fila-oculta {
 }
 }
 /* --- INICIO DE ESTILOS PARA DASHBOARD DE ARMADO --- */
+/* --- INICIO DE ESTILOS PARA DASHBOARD DE COMANDO --- */
 
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  gap: 25px;
+.dashboard-columns-container {
+  display: flex;
+  gap: 20px; /* Espacio entre columnas */
+  align-items: flex-start;
+  overflow-x: auto; /* Permite scroll horizontal en pantallas pequeñas */
+  padding-bottom: 20px;
+}
+
+.status-column {
+  min-width: 350px; /* Ancho mínimo de cada columna */
+  flex: 1; /* Las columnas intentarán ocupar el mismo espacio */
+  background-color: #e9ecef;
+  border-radius: 12px;
+  height: 100%;
+}
+
+.column-title {
+  padding: 12px 15px;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.card-container {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-height: 200px;
+}
+
+.empty-column-message {
+  text-align: center;
+  color: #6c757d;
+  padding: 40px 20px;
+  font-style: italic;
 }
 
 .surgery-card {
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border-left: 6px solid #6c757d; /* Gris para PENDIENTE (por defecto) */
+  border: 1px solid #ddd;
+  transition: box-shadow 0.2s ease;
 }
 
 .surgery-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.surgery-card.status-en-proceso { border-left-color: #ffc107; }
-.surgery-card.status-completado { border-left-color: #28a745; opacity: 0.8; }
+/* Colores de fondo por estado */
+.surgery-card.status-pendientes { background-color: #f8f9fa; } /* Blanco hueso */
+.surgery-card.status-en-proceso { background-color: #fff9e6; } /* Amarillo muy claro */
+.surgery-card.status-en-transito { background-color: #fbe9e7; } /* Rojo muy claro */
+.surgery-card.status-completado { background-color: #e8f5e9; } /* Verde muy claro */
 
-.card-header { padding: 15px 20px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center; }
-.card-header h4 { margin: 0; color: #333; font-family: 'Poppins', sans-serif; }
-.card-date { font-weight: 600; color: #0056b3; background-color: #e7f3ff; padding: 4px 8px; border-radius: 6px; font-size: 0.9em; }
+.card-header { padding: 10px 15px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center; }
+.card-header h4 { margin: 0; font-size: 1.2em; font-weight: 600; } /* Letra más grande */
+.card-date { font-weight: bold; font-size: 1.1em; } /* Fecha más grande */
 
-.card-body { padding: 20px; flex-grow: 1; }
-.card-body p { margin: 0 0 10px 0; font-size: 15px; }
-.card-body h5 { margin-top: 15px; margin-bottom: 8px; color: #007bff; }
+.card-body { padding: 15px; }
+.card-body p { margin: 0 0 10px 0; font-size: 1em; } /* Letra más grande */
+.card-body h5 { margin-top: 15px; margin-bottom: 8px; }
 
-.material-list { padding-left: 20px; margin: 0; font-size: 15px; max-height: 200px; overflow-y: auto; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 10px 10px 10px 30px; }
-.material-list li { margin-bottom: 5px; }
+.material-list { font-size: 1em; } /* Ajuste de tamaño */
 
-.card-footer { padding: 10px 20px; background-color: #f8f9fa; border-top: 1px solid #e9ecef; display: flex; gap: 10px; justify-content: flex-end; }
+.card-footer {
+  padding: 10px 15px;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  gap: 8px;
+  justify-content: space-around; /* Distribuir botones */
+}
 
-.btn-status { padding: 6px 14px; border: none; border-radius: 6px; color: white; cursor: pointer; font-weight: 600; transition: background-color 0.2s ease; }
-.btn-pendiente { background-color: #6c757d; } .btn-pendiente:hover { background-color: #5a6268; }
-.btn-proceso { background-color: #ffc107; color: #212529;} .btn-proceso:hover { background-color: #e0a800; }
-.btn-completado { background-color: #28a745; } .btn-completado:hover { background-color: #218838; }
+.btn-status {
+  border-radius: 50%; /* Botones redondos */
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(0,0,0,0.1);
+  font-size: 1.5em; /* Icono grande */
+  cursor: pointer;
+  background: none;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
 
-/* --- FIN DE ESTILOS PARA DASHBOARD DE ARMADO --- */
+.btn-status:hover {
+  transform: scale(1.1);
+}
+
+/* Colores de botones para que coincidan con el estado que aplican */
+.btn-pendiente { border-color: #6c757d; }
+.btn-proceso { border-color: #ffc107; }
+.btn-transito { border-color: #dc3545; }
+.btn-completado { border-color: #28a745; }
+
+
+/* --- FIN DE ESTILOS PARA DASHBOARD DE COMANDO --- */
