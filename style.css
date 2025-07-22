@@ -857,3 +857,48 @@ body.admin-page tbody tr.fila-oculta {
   color: #333;
 }
 }
+/* --- INICIO DE ESTILOS PARA DASHBOARD DE ARMADO --- */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 25px;
+}
+
+.surgery-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-left: 6px solid #6c757d; /* Gris para PENDIENTE (por defecto) */
+}
+
+.surgery-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.surgery-card.status-en-proceso { border-left-color: #ffc107; }
+.surgery-card.status-completado { border-left-color: #28a745; opacity: 0.8; }
+
+.card-header { padding: 15px 20px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center; }
+.card-header h4 { margin: 0; color: #333; font-family: 'Poppins', sans-serif; }
+.card-date { font-weight: 600; color: #0056b3; background-color: #e7f3ff; padding: 4px 8px; border-radius: 6px; font-size: 0.9em; }
+
+.card-body { padding: 20px; flex-grow: 1; }
+.card-body p { margin: 0 0 10px 0; font-size: 15px; }
+.card-body h5 { margin-top: 15px; margin-bottom: 8px; color: #007bff; }
+
+.material-list { padding-left: 20px; margin: 0; font-size: 15px; max-height: 200px; overflow-y: auto; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 10px 10px 10px 30px; }
+.material-list li { margin-bottom: 5px; }
+
+.card-footer { padding: 10px 20px; background-color: #f8f9fa; border-top: 1px solid #e9ecef; display: flex; gap: 10px; justify-content: flex-end; }
+
+.btn-status { padding: 6px 14px; border: none; border-radius: 6px; color: white; cursor: pointer; font-weight: 600; transition: background-color 0.2s ease; }
+.btn-pendiente { background-color: #6c757d; } .btn-pendiente:hover { background-color: #5a6268; }
+.btn-proceso { background-color: #ffc107; color: #212529;} .btn-proceso:hover { background-color: #e0a800; }
+.btn-completado { background-color: #28a745; } .btn-completado:hover { background-color: #218838; }
+
+/* --- FIN DE ESTILOS PARA DASHBOARD DE ARMADO --- */
